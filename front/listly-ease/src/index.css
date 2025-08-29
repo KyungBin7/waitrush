@@ -840,7 +840,7 @@
 .waitrush-logo-auth {
   object-fit: cover;
   object-position: center;
-  transform: scale(1.3);
+  transform: scale(1.3) translateY(-5%);
   margin: -20% 0 -25% 0;
   max-height: 70vh;
 }

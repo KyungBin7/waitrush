@@ -75,7 +75,7 @@ export function SignupForm() {
   };
 
   return (
-    <Card className="w-full max-w-md glass shadow-glass animate-fade-in">
+    <Card variant="gaming" className="w-full max-w-md shadow-glass animate-fade-in">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl font-semibold">Create Account</CardTitle>
         <CardDescription className="text-muted-foreground">
@@ -175,6 +175,7 @@ export function SignupForm() {
 
           <Button 
             type="submit" 
+            variant="waitrush"
             size="lg" 
             className="w-full"
             disabled={isLoading}

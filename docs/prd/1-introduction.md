@@ -1,0 +1,2 @@
+# 1. Introduction
+This document outlines the requirements for the "Minimal Waitlist Website" project, building upon the further revised Project Brief. The primary goal is to develop an intuitive, user-friendly, and visually stunning waitlist platform that supports both **registered waitlist providers** and **anonymous participants**. This PRD details the functional and non-functional requirements, incorporating specific technology choices and the refined design aesthetic.

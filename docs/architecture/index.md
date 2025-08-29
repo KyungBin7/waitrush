@@ -1,0 +1,20 @@
+# Backend Architecture Document: Minimal Waitlist Website (Nest.js)
+
+## Table of Contents
+
+- [Backend Architecture Document: Minimal Waitlist Website (Nest.js)](#table-of-contents)
+  - [1. Introduction](./1-introduction.md)
+  - [2. Guiding Principles](./2-guiding-principles.md)
+  - [3. Technology Stack (Backend)](./3-technology-stack-backend.md)
+  - [4. High-Level Architecture Overview](./4-high-level-architecture-overview.md)
+  - [5. Detailed API Endpoints & Contracts](./5-detailed-api-endpoints-contracts.md)
+    - [5.1. Authentication & Authorization (Auth Module)](./5-detailed-api-endpoints-contracts.md#51-authentication-authorization-auth-module)
+    - [5.2. Service Management (Services Module - Protected Routes)](./5-detailed-api-endpoints-contracts.md#52-service-management-services-module-protected-routes)
+    - [5.3. Public Waitlist Interaction (Participants Module - Public Routes)](./5-detailed-api-endpoints-contracts.md#53-public-waitlist-interaction-participants-module-public-routes)
+  - [6. Database Schema (MongoDB - using Mongoose)](./6-database-schema-mongodb-using-mongoose.md)
+    - [6.1. Organizer Schema](./6-database-schema-mongodb-using-mongoose.md#61-organizer-schema)
+    - [6.2. Service Schema](./6-database-schema-mongodb-using-mongoose.md#62-service-schema)
+    - [6.3. WaitlistParticipant Schema](./6-database-schema-mongodb-using-mongoose.md#63-waitlistparticipant-schema)
+  - [7. Authentication & Authorization Flow (Nest.js)](./7-authentication-authorization-flow-nestjs.md)
+  - [8. Error Handling & Validation](./8-error-handling-validation.md)
+  - [9. Key Nest.js Dependencies & Modules](./9-key-nestjs-dependencies-modules.md)

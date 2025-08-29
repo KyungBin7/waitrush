@@ -10,6 +10,7 @@ import heroBackground from "@/assets/hero-bg.jpg";
 import premiumAppImage from "@/assets/premium-app.jpg";
 import betaTestingImage from "@/assets/beta-testing.jpg";
 import courseImage from "@/assets/course.jpg";
+import waitrushLogo from "@/assets/waitrush-logo.png";
 
 interface WaitlistItem {
   id: string;
@@ -285,22 +286,24 @@ const Index = () => {
   }, [expandedCard, isMobile]);
 
   return (
-    <div className="min-h-screen relative">
-      {/* Background */}
-      <div 
-        className="fixed inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${heroBackground})` }}
-      />
-      <div className="fixed inset-0 bg-gradient-to-br from-background/95 to-background/85 backdrop-blur-sm" />
+    <div className="min-h-screen relative gaming-lightning-accents">
+      {/* Gaming Background System */}
+      <div className="gaming-bg-main gaming-bg-animated gaming-bg-lightning" />
+      <div className="gaming-bg-grid fixed inset-0 z-0" />
+      <div className="gaming-bg-particles fixed inset-0 z-0" />
       
       {/* Navigation */}
-      <nav className="glass border-b border-border/50 fixed top-0 left-0 right-0 z-50">
+      <nav className="gaming-nav fixed top-0 left-0 right-0 z-50">
         <div className="responsive-container">
           <div className="flex items-center justify-between h-14 sm:h-16">
             <div className="flex items-center">
-              <h1 className="text-lg sm:text-xl font-bold text-foreground text-glow-yellow">
-                WaitRush Gaming Queue
-              </h1>
+              <Link to="/" className="flex items-center">
+                <img 
+                  src={waitrushLogo} 
+                  alt="WaitRush Gaming Queue" 
+                  className="waitrush-logo h-40 sm:h-48 w-auto"
+                />
+              </Link>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">
               {authLoading ? (
@@ -365,7 +368,7 @@ const Index = () => {
           <div className="max-w-2xl mx-auto mb-8 animate-fade-in">
             <div className="relative group">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-primary-glow rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-500"></div>
-              <div className="relative bg-white/90 dark:bg-background/90 backdrop-blur-xl rounded-2xl border border-primary/20 shadow-xl">
+              <div className="relative gaming-glass-enhanced rounded-2xl shadow-xl">
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-primary h-5 w-5 z-10" />
                 <Input
                   type="text"
@@ -410,7 +413,7 @@ const Index = () => {
           {/* Hybrid Category Filter - Collapsible */}
           <div ref={categoryRef} className="mb-8 sm:mb-12 animate-fade-in">
             <div className="max-w-5xl mx-auto px-2 sm:px-0">
-              <div className="bg-white/90 dark:bg-card/90 rounded-xl sm:rounded-2xl shadow-lg backdrop-blur-sm border border-border/30">
+              <div className="gaming-container rounded-xl sm:rounded-2xl shadow-lg">
                 {/* Header - Always Visible */}
                 <div 
                   className="p-4 cursor-pointer select-none"
@@ -851,7 +854,7 @@ const Index = () => {
             </div>
           ) : (
             <div className="text-center py-12">
-              <Card className="glass shadow-glass inline-block">
+              <Card className="gaming-layer-card shadow-glass inline-block">
                 <CardContent className="py-8 px-12">
                   <h3 className="text-xl font-semibold text-foreground mb-2">
                     No gaming queues found
@@ -885,7 +888,7 @@ const Index = () => {
           {/* Call to Action for Organizers */}
           {!authLoading && (
             <div className="mt-16 text-center animate-slide-up">
-              <Card className="glass shadow-glass inline-block">
+              <Card className="gaming-glass shadow-glass inline-block">
                 <CardContent className="py-8 px-12">
                   {isAuthenticated ? (
                     // Show dashboard CTA for authenticated users
@@ -928,7 +931,7 @@ const Index = () => {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 glass border-t border-border/50 mt-12 sm:mt-16">
+      <footer className="relative z-10 gaming-nav border-t border-border/50 mt-12 sm:mt-16">
         <div className="responsive-container py-6 sm:py-8">
           <div className="text-center responsive-text-sm text-muted-foreground">
             © 2024 WaitRush Gaming Queue. Discover and join amazing upcoming projects.

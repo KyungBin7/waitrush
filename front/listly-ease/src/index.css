@@ -584,3 +584,265 @@
 .grid-stagger:nth-child(7) { animation-delay: 360ms; }
 .grid-stagger:nth-child(8) { animation-delay: 420ms; }
 .grid-stagger:nth-child(9) { animation-delay: 480ms; }
+
+/* Gaming Theme Background System */
+.gaming-bg-main {
+  background: radial-gradient(ellipse at top, hsl(0 0% 8%) 0%, hsl(0 0% 4%) 50%, hsl(0 0% 0%) 100%);
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+.gaming-bg-secondary {
+  background: linear-gradient(135deg, hsl(0 0% 8% / 0.8) 0%, hsl(0 0% 5% / 0.9) 50%, hsl(0 0% 3% / 0.95) 100%);
+}
+
+/* Component Layer Backgrounds - 계층적 분리 */
+.gaming-layer-content {
+  background: hsl(0 0% 7% / 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid hsl(51 100% 50% / 0.1);
+}
+
+.gaming-layer-section {
+  background: hsl(0 0% 9% / 0.8);
+  backdrop-filter: blur(4px);
+}
+
+.gaming-layer-card {
+  background: hsl(0 0% 12% / 0.9);
+  backdrop-filter: blur(2px);
+  border: 1px solid hsl(51 100% 50% / 0.05);
+}
+
+/* Gaming Background with Subtle Lightning Effect */
+@keyframes gaming-bg-pulse {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gaming-bg-animated {
+  background: linear-gradient(135deg, 
+    hsl(0 0% 8%) 0%, 
+    hsl(0 0% 6%) 25%,
+    hsl(0 0% 4%) 50%,
+    hsl(0 0% 6%) 75%,
+    hsl(0 0% 8%) 100%
+  );
+  background-size: 200% 200%;
+  animation: gaming-bg-pulse 8s ease-in-out infinite;
+}
+
+/* Enhanced Glass Effect for Gaming */
+.gaming-glass {
+  background: linear-gradient(135deg, 
+    hsl(0 0% 12% / 0.1) 0%, 
+    hsl(0 0% 8% / 0.3) 50%, 
+    hsl(0 0% 5% / 0.4) 100%
+  );
+  backdrop-filter: blur(12px) saturate(1.5);
+  border: 1px solid hsl(51 100% 50% / 0.1);
+  box-shadow: 0 0 20px hsl(51 100% 50% / 0.05);
+}
+
+/* Navigation Gaming Style */
+.gaming-nav {
+  background: linear-gradient(135deg, 
+    hsl(0 0% 8% / 0.95) 0%, 
+    hsl(0 0% 5% / 0.98) 100%
+  );
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid hsl(51 100% 50% / 0.15);
+  box-shadow: 0 4px 20px hsl(0 0% 0% / 0.3);
+}
+
+/* Content Container with Depth */
+.gaming-container {
+  background: linear-gradient(135deg, 
+    hsl(0 0% 4% / 0.4) 0%, 
+    hsl(0 0% 6% / 0.6) 50%, 
+    hsl(0 0% 4% / 0.8) 100%
+  );
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  border: 1px solid hsl(51 100% 50% / 0.08);
+}
+
+/* Electric Grid Pattern Background (Subtle) */
+.gaming-bg-grid {
+  background-image: 
+    linear-gradient(hsl(51 100% 50% / 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(51 100% 50% / 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Responsive Gaming Background */
+@media (prefers-reduced-motion: reduce) {
+  .gaming-bg-animated {
+    animation: none;
+  }
+}
+
+/* Lightning Background Effects - 번개 테마와 조화 */
+@keyframes lightning-bg-flash {
+  0%, 98% {
+    box-shadow: inset 0 0 0 transparent;
+  }
+  1% {
+    box-shadow: inset 0 0 100px hsl(51 100% 50% / 0.03);
+  }
+  2% {
+    box-shadow: inset 0 0 50px hsl(51 100% 50% / 0.02);
+  }
+}
+
+.gaming-bg-lightning {
+  animation: lightning-bg-flash 12s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+/* Subtle Electric Particles Effect */
+@keyframes electric-particles {
+  0% {
+    background-position: 0% 0%;
+    opacity: 0.8;
+  }
+  25% {
+    background-position: 100% 0%;
+    opacity: 1;
+  }
+  50% {
+    background-position: 100% 100%;
+    opacity: 0.6;
+  }
+  75% {
+    background-position: 0% 100%;
+    opacity: 1;
+  }
+  100% {
+    background-position: 0% 0%;
+    opacity: 0.8;
+  }
+}
+
+.gaming-bg-particles {
+  background: radial-gradient(circle at 20% 80%, hsl(51 100% 50% / 0.01) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, hsl(51 100% 70% / 0.01) 0%, transparent 50%),
+              radial-gradient(circle at 40% 40%, hsl(51 100% 60% / 0.01) 0%, transparent 50%);
+  background-size: 300px 300px, 200px 200px, 400px 400px;
+  animation: electric-particles 20s ease-in-out infinite;
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Enhanced Gaming Glass with Lightning Tint */
+.gaming-glass-enhanced {
+  background: linear-gradient(135deg, 
+    hsl(51 100% 50% / 0.02) 0%, 
+    hsl(0 0% 12% / 0.1) 25%,
+    hsl(0 0% 8% / 0.3) 50%, 
+    hsl(51 100% 50% / 0.01) 75%,
+    hsl(0 0% 5% / 0.4) 100%
+  );
+  backdrop-filter: blur(12px) saturate(1.5);
+  border: 1px solid hsl(51 100% 50% / 0.15);
+  box-shadow: 0 0 30px hsl(51 100% 50% / 0.08), 
+              inset 0 1px 0 hsl(51 100% 50% / 0.1);
+}
+
+/* Dynamic Lightning Accent Lines */
+@keyframes lightning-lines {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0) scaleY(0);
+  }
+  50% {
+    opacity: 0.3;
+    transform: translateY(-20px) scaleY(1);
+  }
+}
+
+.gaming-lightning-accents::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, hsl(51 100% 50% / 0.2), transparent);
+  animation: lightning-lines 8s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.gaming-lightning-accents::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 15%;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, hsl(51 100% 50% / 0.15), transparent);
+  animation: lightning-lines 10s ease-in-out infinite;
+  animation-delay: 5s;
+}
+
+/* Mobile Optimized Gaming Backgrounds */
+@media (max-width: 768px) {
+  .gaming-bg-main {
+    background: linear-gradient(135deg, hsl(0 0% 8%) 0%, hsl(0 0% 0%) 100%);
+  }
+  
+  .gaming-glass {
+    backdrop-filter: blur(8px);
+  }
+  
+  .gaming-nav {
+    backdrop-filter: blur(12px);
+  }
+  
+  .gaming-bg-particles {
+    background-size: 200px 200px, 150px 150px, 250px 250px;
+  }
+  
+  .gaming-lightning-accents::before,
+  .gaming-lightning-accents::after {
+    display: none; /* 모바일에서는 성능을 위해 비활성화 */
+  }
+}
+
+/* WaitRush Logo Optimization */
+.waitrush-logo {
+  filter: drop-shadow(0 0 8px hsl(51 100% 50% / 0.3));
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.waitrush-logo:hover {
+  filter: drop-shadow(0 0 12px hsl(51 100% 50% / 0.5));
+  transform: scale(1.05);
+}
+
+/* Logo Loading Optimization */
+.waitrush-logo {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: optimize-quality;
+}
+
+/* Dark Mode Logo Enhancement */
+@media (prefers-color-scheme: dark) {
+  .waitrush-logo {
+    filter: brightness(1.1) drop-shadow(0 0 8px hsl(51 100% 50% / 0.3));
+  }
+  
+  .waitrush-logo:hover {
+    filter: brightness(1.2) drop-shadow(0 0 12px hsl(51 100% 50% / 0.5));
+  }
+}

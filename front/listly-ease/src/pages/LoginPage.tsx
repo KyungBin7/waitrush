@@ -9,7 +9,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden gaming-lightning-accents">
+    <div className="min-h-screen flex items-center justify-center p-2 sm:p-4 lg:p-6 relative overflow-hidden gaming-lightning-accents">
       {/* Gaming Background System */}
       <div className="gaming-bg-main gaming-bg-animated gaming-bg-lightning" />
       <div className="gaming-bg-grid fixed inset-0 z-0" />
@@ -27,12 +27,12 @@ export default function LoginPage() {
       
       {/* Content */}
       <div className="relative z-10 w-full max-w-xs sm:max-w-sm md:max-w-md">
-        <div className="text-center mb-6 sm:mb-8">
-          <div className="flex justify-center mb-4">
+        <div className="text-center mb-2 sm:mb-3">
+          <div className="flex justify-center mb-1">
             <img 
               src={waitrushLogo} 
               alt="WaitRush Gaming Queue" 
-              className="waitrush-logo h-80 sm:h-96 w-auto"
+              className="waitrush-logo waitrush-logo-auth h-80 sm:h-96 w-auto"
             />
           </div>
           <p className="text-muted-foreground responsive-text-base">

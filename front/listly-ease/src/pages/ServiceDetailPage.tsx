@@ -368,7 +368,7 @@ const ServiceDetailPage = () => {
         title: "💾 Auto-saved",
         description: "Changes saved automatically",
         duration: 2000,
-        className: "border-blue-500/20 bg-blue-50 dark:bg-blue-950",
+        className: "border border-primary/30 bg-gradient-to-r from-primary/10 to-yellow-400/10 backdrop-blur-sm shadow-lg shadow-primary/20 text-foreground",
       });
     } catch (err) {
       console.error("Auto-save error:", err);
@@ -454,7 +454,7 @@ const ServiceDetailPage = () => {
       toast({
         title: "✅ Success",
         description: "Service updated successfully!",
-        className: "border-green-500/20 bg-green-50 dark:bg-green-950",
+        className: "border border-primary/50 bg-gradient-to-r from-primary/20 to-yellow-400/20 backdrop-blur-sm shadow-xl shadow-primary/30 text-foreground font-semibold",
       });
     } catch (err) {
       console.error("Manual save error:", err);

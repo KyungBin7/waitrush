@@ -728,16 +728,16 @@ const Index = () => {
                                 `}>
                                   
                                   {/* Notification Card Container */}
-                                  <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200/60 dark:border-gray-700/60 overflow-hidden w-40">
+                                  <div className="bg-background/95 dark:bg-card/95 rounded-lg shadow-lg border border-primary/20 backdrop-blur-sm overflow-hidden w-40">
                                     
                                     {/* Card Header */}
-                                    <div className="px-2 py-1 bg-gray-50/80 dark:bg-gray-800/80 border-b border-gray-200/40 dark:border-gray-700/40">
+                                    <div className="px-2 py-1 bg-primary/5 dark:bg-primary/10 border-b border-primary/15">
                                       <div className="flex items-center gap-1.5">
-                                        <div className="w-1 h-1 rounded-full bg-blue-500"></div>
-                                        <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                        <div className="w-1 h-1 rounded-full bg-primary"></div>
+                                        <span className="text-xs font-medium text-foreground">
                                           All Categories
                                         </span>
-                                        <span className="ml-auto text-xs text-gray-500 dark:text-gray-400">
+                                        <span className="ml-auto text-xs text-muted-foreground">
                                           {waitlist.categories.length}
                                         </span>
                                       </div>
@@ -753,8 +753,8 @@ const Index = () => {
                                             className={`
                                               px-2 py-1 cursor-pointer transition-all duration-150
                                               ${isMainCat 
-                                                ? 'bg-blue-50 dark:bg-blue-900/20 border-l-2 border-blue-500 text-blue-700 dark:text-blue-300' 
-                                                : 'hover:bg-gray-50 dark:hover:bg-gray-800/50 text-gray-700 dark:text-gray-300'
+                                                ? 'bg-primary/10 dark:bg-primary/20 border-l-2 border-primary text-primary dark:text-primary' 
+                                                : 'hover:bg-primary/5 dark:hover:bg-primary/10 text-foreground'
                                               }
                                             `}
                                             onClick={(e) => {
@@ -772,8 +772,8 @@ const Index = () => {
                                               </span>
                                               {isMainCat && (
                                                 <div className="flex items-center gap-1">
-                                                  <span className="text-xs text-blue-600 dark:text-blue-400 font-medium">Main</span>
-                                                  <div className="w-1 h-1 rounded-full bg-blue-500"></div>
+                                                  <span className="text-xs text-primary dark:text-primary font-medium">Main</span>
+                                                  <div className="w-1 h-1 rounded-full bg-primary"></div>
                                                 </div>
                                               )}
                                             </div>
@@ -783,8 +783,8 @@ const Index = () => {
                                     </div>
                                     
                                     {/* Card Footer */}
-                                    <div className="px-2 py-0.5 bg-gray-50/50 dark:bg-gray-800/50 border-t border-gray-200/30 dark:border-gray-700/30">
-                                      <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                                    <div className="px-2 py-0.5 bg-primary/5 dark:bg-primary/10 border-t border-primary/15">
+                                      <div className="text-xs text-muted-foreground text-center">
                                         Tap to filter
                                       </div>
                                     </div>

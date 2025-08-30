@@ -58,7 +58,7 @@ const CountUpDigit = ({ value, label }: { value: number; label: string }) => {
         <div className="glass backdrop-blur-md bg-white/5 dark:bg-black/10 border border-white/10 dark:border-white/5 rounded-xl p-2 min-w-[50px] text-center shadow-md">
           <motion.span
             ref={ref}
-            className="text-lg md:text-xl font-bold bg-gradient-to-br from-blue-600 to-blue-700 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent font-mono"
+            className="text-lg md:text-xl font-bold bg-gradient-to-br from-primary to-primary-glow dark:from-primary dark:to-primary-glow bg-clip-text text-transparent font-mono"
             initial={{ filter: "blur(5px)" }}
             animate={{ filter: "blur(0px)" }}
             transition={{ duration: 0.6, delay: 0.1 }}

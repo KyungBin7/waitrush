@@ -1112,23 +1112,36 @@ const ServiceDetailPage = () => {
               </div>
             ) : (
               <div className="relative group">
-                {/* Navigation Buttons */}
+                {/* Shadow Navigation Areas */}
                 {screenshots.length > 1 && (
                   <>
-                    <button
+                    {/* Left Navigation Area */}
+                    <div
                       onClick={goToPreviousImage}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 z-20 bg-black/60 hover:bg-black/80 backdrop-blur-sm rounded-full p-3 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 opacity-0 group-hover:opacity-100"
+                      className="absolute left-0 top-0 bottom-0 w-1/3 z-20 cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300"
+                      style={{
+                        background: 'linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 70%, transparent 100%)'
+                      }}
                       aria-label="Previous image"
                     >
-                      <ChevronLeft className="h-5 w-5 text-white" />
-                    </button>
-                    <button
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2">
+                        <ChevronLeft className="h-6 w-6 text-white/80 hover:text-primary transition-colors duration-300 drop-shadow-lg" />
+                      </div>
+                    </div>
+                    
+                    {/* Right Navigation Area */}
+                    <div
                       onClick={goToNextImage}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 z-20 bg-black/60 hover:bg-black/80 backdrop-blur-sm rounded-full p-3 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 opacity-0 group-hover:opacity-100"
+                      className="absolute right-0 top-0 bottom-0 w-1/3 z-20 cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300"
+                      style={{
+                        background: 'linear-gradient(to left, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 70%, transparent 100%)'
+                      }}
                       aria-label="Next image"
                     >
-                      <ChevronRight className="h-5 w-5 text-white" />
-                    </button>
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                        <ChevronRight className="h-6 w-6 text-white/80 hover:text-primary transition-colors duration-300 drop-shadow-lg" />
+                      </div>
+                    </div>
                   </>
                 )}
                 

@@ -416,7 +416,7 @@ const Index = () => {
             <div className="max-w-5xl mx-auto px-2 sm:px-0">
               <div className="relative group">
                 {/* Gaming glow effect */}
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-yellow-400 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-300" />
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-yellow-400 rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-300" />
                 <Card className="glass shadow-card-premium relative overflow-hidden">
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5"

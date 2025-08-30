@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { motion, useMotionValue, useSpring, useInView } from "framer-motion";
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -47,6 +48,59 @@ interface ServiceDetail {
   createdAt?: string;
   updatedAt?: string;
 }
+
+// Gaming Counter Animation Component
+const AnimatedCounter = ({ value, delay = 0 }: { value: number; delay?: number }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const motionValue = useMotionValue(0);
+  const springValue = useSpring(motionValue, {
+    damping: 25,
+    stiffness: 120,
+  });
+  const isInView = useInView(ref, { once: true, margin: "-10px" });
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    // 즉시 값을 표시하고 애니메이션 시작
+    if (isInView && value > 0) {
+      motionValue.set(value);
+    }
+  }, [value, isInView, motionValue]);
+
+  useEffect(() => {
+    const unsubscribe = springValue.on("change", (latest) => {
+      const rounded = Math.floor(latest);
+      setDisplayValue(rounded);
+      if (ref.current) {
+        ref.current.textContent = rounded.toLocaleString();
+      }
+    });
+
+    return () => unsubscribe();
+  }, [springValue]);
+
+  // 즉시 표시를 위한 fallback
+  useEffect(() => {
+    if (!isInView && value > 0) {
+      setDisplayValue(value);
+      if (ref.current) {
+        ref.current.textContent = value.toLocaleString();
+      }
+    }
+  }, [value, isInView]);
+
+  return (
+    <motion.span
+      ref={ref}
+      className="font-bold text-2xl sm:text-3xl bg-gradient-to-r from-primary to-yellow-400 bg-clip-text text-transparent"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: delay / 1000, duration: 0.3 }}
+    >
+      {displayValue.toLocaleString()}
+    </motion.span>
+  );
+};
 
 const ServiceDetailPage = () => {
   const { slug } = useParams();
@@ -640,9 +694,9 @@ const ServiceDetailPage = () => {
                       <Button 
                         size="sm" 
                         onClick={() => setEditingField(null)} 
-                        className="bg-green-600 hover:bg-green-700"
+                        className="bg-gradient-to-r from-primary to-yellow-400 hover:from-primary/90 hover:to-yellow-400/90 text-black font-bold shadow-lg hover:shadow-primary/25 transition-all duration-200"
                       >
-                        ✓ Done
+                        Done
                       </Button>
                     </div>
                   </div>
@@ -744,25 +798,123 @@ const ServiceDetailPage = () => {
 
           {/* Right: Quick Stats */}
           <div className="lg:w-80">
-            <Card className="glass">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+            >
+              <Card className="glass relative overflow-hidden">
+                <motion.div
+                  className="absolute inset-0 rounded-lg"
+                  animate={{
+                    boxShadow: [
+                      "0 0 5px hsla(var(--primary) / 0.1)",
+                      "0 0 15px hsla(var(--primary) / 0.2)",
+                      "0 0 5px hsla(var(--primary) / 0.1)"
+                    ]
+                  }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                />
               <CardContent className="p-6">
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Rush</span>
-                    <div className="flex items-center space-x-1">
-                      <Users className="h-4 w-4 text-muted-foreground" />
-                      <span className="font-semibold">{(service.participantCount || 0).toLocaleString()}</span>
-                    </div>
+                    <motion.span 
+                      className="text-sm text-muted-foreground relative"
+                      animate={{ 
+                        textShadow: [
+                          "0 0 5px hsla(var(--primary) / 0.3)",
+                          "0 0 10px hsla(var(--primary) / 0.5)",
+                          "0 0 5px hsla(var(--primary) / 0.3)"
+                        ]
+                      }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      Rush
+                      <motion.div
+                        className="absolute -top-1 -right-2 w-1.5 h-1.5 bg-primary rounded-full"
+                        animate={{ 
+                          scale: [0, 1.2, 0],
+                          opacity: [0, 1, 0]
+                        }}
+                        transition={{ 
+                          duration: 2,
+                          repeat: Infinity,
+                          repeatDelay: 4
+                        }}
+                      />
+                    </motion.span>
+                    <motion.div 
+                      className="flex items-center space-x-1 relative"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2, duration: 0.5 }}
+                    >
+                      <motion.div
+                        animate={{ 
+                          scale: [1, 1.1, 1],
+                          rotate: [0, 5, -5, 0]
+                        }}
+                        transition={{ 
+                          duration: 2,
+                          repeat: Infinity,
+                          repeatDelay: 3
+                        }}
+                      >
+                        <Users className="h-4 w-4 text-primary" />
+                      </motion.div>
+                      {service.participantCount > 0 ? (
+                        <AnimatedCounter value={service.participantCount || 0} delay={100} />
+                      ) : (
+                        <span className="font-bold text-2xl sm:text-3xl bg-gradient-to-r from-primary to-yellow-400 bg-clip-text text-transparent">
+                          {(service.participantCount || 0).toLocaleString()}
+                        </span>
+                      )}
+                      <motion.span 
+                        className="text-primary ml-1"
+                        animate={{ opacity: [0.5, 1, 0.5] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      >
+                        +
+                      </motion.span>
+                    </motion.div>
                   </div>
                   {(service.categories?.length || service.category) && (
                     <div className="flex justify-between items-start">
                       <span className="text-sm text-muted-foreground">Category</span>
                       <div className="flex flex-wrap gap-1 justify-end">
                         {service.categories?.length ? (
-                          service.categories.map((cat) => (
-                            <Badge key={cat} variant="secondary" className="text-xs">
-                              {cat}
-                            </Badge>
+                          service.categories.map((cat, index) => (
+                            <motion.div
+                              key={cat}
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ delay: 0.3 + index * 0.05, duration: 0.3 }}
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              <Badge 
+                                variant="secondary" 
+                                className="text-xs relative overflow-hidden"
+                                style={{
+                                  background: 'linear-gradient(45deg, hsla(var(--primary) / 0.15), hsla(var(--primary) / 0.05))',
+                                  border: '1px solid hsla(var(--primary) / 0.3)',
+                                  color: 'hsl(var(--primary))'
+                                }}
+                              >
+                                {cat}
+                                <motion.div
+                                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                                  animate={{
+                                    x: ['-100%', '100%']
+                                  }}
+                                  transition={{
+                                    duration: 3,
+                                    repeat: Infinity,
+                                    repeatDelay: 4,
+                                    ease: "easeInOut"
+                                  }}
+                                />
+                              </Badge>
+                            </motion.div>
                           ))
                         ) : (
                           <Badge variant="secondary">{service.category}</Badge>
@@ -775,10 +927,38 @@ const ServiceDetailPage = () => {
                       <span className="text-sm text-muted-foreground">Platform</span>
                       <div className="flex flex-wrap gap-1 justify-end">
                         {service.platforms?.length ? (
-                          service.platforms.map((platform) => (
-                            <Badge key={platform} variant="outline" className="text-xs">
-                              {platform}
-                            </Badge>
+                          service.platforms.map((platform, index) => (
+                            <motion.div
+                              key={platform}
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ delay: 0.4 + index * 0.05, duration: 0.3 }}
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              <Badge 
+                                variant="outline" 
+                                className="text-xs relative overflow-hidden"
+                                style={{
+                                  background: 'linear-gradient(45deg, hsla(120, 60%, 50%, 0.15), hsla(120, 60%, 50%, 0.05))',
+                                  border: '1px solid hsla(120, 60%, 50%, 0.3)',
+                                  color: 'hsl(120, 60%, 50%)'
+                                }}
+                              >
+                                {platform}
+                                <motion.div
+                                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent"
+                                  animate={{
+                                    x: ['-100%', '100%']
+                                  }}
+                                  transition={{
+                                    duration: 3.5,
+                                    repeat: Infinity,
+                                    repeatDelay: 5,
+                                    ease: "easeInOut"
+                                  }}
+                                />
+                              </Badge>
+                            </motion.div>
                           ))
                         ) : (
                           <Badge variant="outline" className="text-xs">{service.platform}</Badge>
@@ -797,10 +977,38 @@ const ServiceDetailPage = () => {
                       <span className="text-sm text-muted-foreground">Language</span>
                       <div className="flex flex-wrap gap-1 justify-end">
                         {service.languages?.length ? (
-                          service.languages.map((language) => (
-                            <Badge key={language} variant="outline" className="text-xs">
-                              {language}
-                            </Badge>
+                          service.languages.map((language, index) => (
+                            <motion.div
+                              key={language}
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ delay: 0.5 + index * 0.05, duration: 0.3 }}
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              <Badge 
+                                variant="outline" 
+                                className="text-xs relative overflow-hidden"
+                                style={{
+                                  background: 'linear-gradient(45deg, hsla(280, 60%, 50%, 0.15), hsla(280, 60%, 50%, 0.05))',
+                                  border: '1px solid hsla(280, 60%, 50%, 0.3)',
+                                  color: 'hsl(280, 60%, 50%)'
+                                }}
+                              >
+                                {language}
+                                <motion.div
+                                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent"
+                                  animate={{
+                                    x: ['-100%', '100%']
+                                  }}
+                                  transition={{
+                                    duration: 4,
+                                    repeat: Infinity,
+                                    repeatDelay: 6,
+                                    ease: "easeInOut"
+                                  }}
+                                />
+                              </Badge>
+                            </motion.div>
                           ))
                         ) : (
                           <Badge variant="outline" className="text-xs">{service.language}</Badge>
@@ -811,6 +1019,7 @@ const ServiceDetailPage = () => {
                 </div>
               </CardContent>
             </Card>
+            </motion.div>
           </div>
         </div>
 
@@ -863,9 +1072,9 @@ const ServiceDetailPage = () => {
                     <Button 
                       size="sm" 
                       onClick={() => setEditingField(null)} 
-                      className="bg-green-600 hover:bg-green-700"
+                      className="bg-gradient-to-r from-primary to-yellow-400 hover:from-primary/90 hover:to-yellow-400/90 text-black font-bold shadow-lg hover:shadow-primary/25 transition-all duration-200"
                     >
-                      ✓ Done
+                      ⚡ Done
                     </Button>
                   </div>
                 </div>
@@ -901,9 +1110,9 @@ const ServiceDetailPage = () => {
                           <Button 
                             size="sm" 
                             onClick={() => setEditingField(null)} 
-                            className="bg-green-600 hover:bg-green-700"
+                            className="bg-gradient-to-r from-primary to-yellow-400 hover:from-primary/90 hover:to-yellow-400/90 text-black font-bold shadow-lg hover:shadow-primary/25 transition-all duration-200"
                           >
-                            ✓ Done
+                            Done
                           </Button>
                         </div>
                       </div>
@@ -1073,9 +1282,9 @@ const ServiceDetailPage = () => {
                             <Button 
                               size="sm" 
                               onClick={() => setEditingField(null)} 
-                              className="bg-green-600 hover:bg-green-700"
+                              className="bg-gradient-to-r from-primary to-yellow-400 hover:from-primary/90 hover:to-yellow-400/90 text-black font-bold shadow-lg hover:shadow-primary/25 transition-all duration-200"
                             >
-                              ✓ Done
+                              Done
                             </Button>
                           </div>
                         </div>
@@ -1119,9 +1328,9 @@ const ServiceDetailPage = () => {
                             <Button 
                               size="sm" 
                               onClick={() => setEditingField(null)} 
-                              className="bg-green-600 hover:bg-green-700"
+                              className="bg-gradient-to-r from-primary to-yellow-400 hover:from-primary/90 hover:to-yellow-400/90 text-black font-bold shadow-lg hover:shadow-primary/25 transition-all duration-200"
                             >
-                              ✓ Done
+                              Done
                             </Button>
                           </div>
                         </div>
@@ -1165,9 +1374,9 @@ const ServiceDetailPage = () => {
                             <Button 
                               size="sm" 
                               onClick={() => setEditingField(null)} 
-                              className="bg-green-600 hover:bg-green-700"
+                              className="bg-gradient-to-r from-primary to-yellow-400 hover:from-primary/90 hover:to-yellow-400/90 text-black font-bold shadow-lg hover:shadow-primary/25 transition-all duration-200"
                             >
-                              ✓ Done
+                              Done
                             </Button>
                           </div>
                         </div>
@@ -1207,26 +1416,115 @@ const ServiceDetailPage = () => {
           </div>
         </div>
 
-        {/* Bottom CTA */}
-        <Card className="glass shadow-card-premium">
-          <CardContent className="p-8 text-center">
-            <h3 className="text-2xl font-bold text-foreground mb-3">
-              Ready to join the rush?
-            </h3>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Be among the first to experience {service.title || service.name}. Join {(service.participantCount || 0).toLocaleString()} others who are already rushing in.
-            </p>
-            <Button 
-              size="lg" 
-              className="shadow-button"
-              asChild
-            >
-              <Link to={`/waitlist/${service.slug}`}>
-                Join Rush Now
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
+        {/* Bottom CTA with Gaming Effects */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+        >
+          <Card className="glass shadow-card-premium relative overflow-hidden">
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5"
+              animate={{
+                x: ['-100%', '100%']
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                repeatDelay: 6,
+                ease: "easeInOut"
+              }}
+            />
+            <CardContent className="p-8 text-center relative z-10">
+              <motion.h3 
+                className="text-2xl font-bold text-foreground mb-3 relative"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.4, duration: 0.6 }}
+              >
+                <motion.span
+                  animate={{
+                    textShadow: [
+                      "0 0 10px hsla(var(--primary) / 0.2)",
+                      "0 0 20px hsla(var(--primary) / 0.4)",
+                      "0 0 10px hsla(var(--primary) / 0.2)"
+                    ]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  Ready to join the rush?
+                </motion.span>
+                <motion.div
+                  className="absolute -top-1 -right-3 text-primary"
+                  animate={{
+                    scale: [0.8, 1.2, 0.8],
+                    rotate: [0, 10, -10, 0]
+                  }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    repeatDelay: 3
+                  }}
+                >
+                  ⚡
+                </motion.div>
+              </motion.h3>
+              <motion.p 
+                className="text-muted-foreground mb-6 max-w-2xl mx-auto"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.6, duration: 0.6 }}
+              >
+                Be among the first to experience {service.title || service.name}. Join{' '}
+                <motion.span
+                  className="font-semibold text-primary"
+                  animate={{
+                    scale: [1, 1.05, 1]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  {(service.participantCount || 0).toLocaleString()}
+                </motion.span>
+                {' '}others who are already rushing in.
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.8, duration: 0.6, type: "spring" }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Button 
+                  size="lg" 
+                  className="shadow-button relative overflow-hidden"
+                  asChild
+                >
+                  <Link to={`/waitlist/${service.slug}`}>
+                    <motion.span className="relative z-10">
+                      Join Rush Now
+                    </motion.span>
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                      animate={{
+                        x: ['-100%', '100%']
+                      }}
+                      transition={{
+                        duration: 2.5,
+                        repeat: Infinity,
+                        repeatDelay: 4,
+                        ease: "easeInOut"
+                      }}
+                    />
+                  </Link>
+                </Button>
+              </motion.div>
+            </CardContent>
+          </Card>
+        </motion.div>
       </main>
     </div>
   );

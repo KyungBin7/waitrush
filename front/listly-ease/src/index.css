@@ -308,6 +308,36 @@
   }
 }
 
+/* 가벼운 게이밍 효과들 */
+@keyframes subtlePulse {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+@keyframes gentleGlow {
+  0%, 100% { 
+    box-shadow: 0 0 5px hsla(var(--primary) / 0.1);
+  }
+  50% { 
+    box-shadow: 0 0 8px hsla(var(--primary) / 0.15);
+  }
+}
+
+.gaming-stats {
+  animation: gentleGlow 4s ease-in-out infinite;
+}
+
+.gaming-counter {
+  animation: subtlePulse 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gaming-stats,
+  .gaming-counter {
+    animation: none;
+  }
+}
+
 /* WaitRush Lightning Effects */
 @keyframes lightning-pulse {
   0% {

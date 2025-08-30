@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { DeleteAccountDialog } from "@/components/auth/DeleteAccountDialog";
 import { authService } from "@/services/auth.service";
 import { useToast } from "@/hooks/use-toast";
-import heroBackground from "@/assets/hero-bg.jpg";
+import waitrushLogo from "@/assets/waitrush-logo.png";
 
 interface FullProfile {
   id: string;
@@ -95,39 +95,40 @@ export default function AccountSettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-hero relative">
-      {/* Background */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center opacity-10"
-        style={{ backgroundImage: `url(${heroBackground})` }}
-      />
-      
+    <div className="min-h-screen bg-gradient-to-br from-neutral-950 via-yellow-950/5 to-stone-950">
       <div className="relative z-10">
         {/* Header */}
-        <header className="glass border-b border-border/50 sticky top-0 z-10">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center space-x-4">
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/dashboard">
-                    <ArrowLeft className="h-4 w-4 mr-2" />
-                    Back to Dashboard
-                  </Link>
-                </Button>
-                <Separator orientation="vertical" className="h-6" />
-                <h1 className="text-xl font-semibold text-foreground">
+        <header className="backdrop-blur-xl bg-black/20 border-b border-white/5 sticky top-0 z-10">
+          <div className="responsive-container">
+            <div className="flex items-center justify-between h-14 sm:h-16">
+              <Link to="/" className="flex items-center">
+                <img 
+                  src={waitrushLogo} 
+                  alt="WaitRush Gaming Queue" 
+                  className="waitrush-logo h-40 sm:h-48 w-auto"
+                />
+              </Link>
+              <div className="flex items-center space-x-2 sm:space-x-4">
+                <h1 className="text-lg sm:text-xl font-semibold text-foreground">
                   Account Settings
                 </h1>
+                <Separator orientation="vertical" className="h-6 border-white/10" />
+                <Button variant="ghost" size="sm" className="touch-friendly-sm" asChild>
+                  <Link to="/dashboard">
+                    <ArrowLeft className="h-4 w-4 sm:mr-2" />
+                    <span className="hidden sm:inline">Back to Dashboard</span>
+                  </Link>
+                </Button>
               </div>
             </div>
           </div>
         </header>
 
         {/* Main Content */}
-        <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="space-y-8">
+        <main className="responsive-container py-6 sm:py-8">
+          <div className="space-y-6 sm:space-y-8 px-4 sm:px-0 animate-fade-in">
             {/* Account Information */}
-            <Card className="glass shadow-glass">
+            <Card className="bg-black/20 border-white/5 backdrop-blur-sm animate-fade-in" style={{animationDelay: '0.1s'}}>
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <Shield className="h-5 w-5 mr-2" />
@@ -147,7 +148,7 @@ export default function AccountSettingsPage() {
                   </div>
                 </div>
                 
-                <Separator />
+                <Separator className="border-white/10" />
                 
                 <div>
                   <div className="flex items-center justify-between">
@@ -160,7 +161,7 @@ export default function AccountSettingsPage() {
                   </div>
                 </div>
 
-                <Separator />
+                <Separator className="border-white/10" />
 
                 <div>
                   <p className="text-sm font-medium text-muted-foreground mb-3">Authentication Methods</p>
@@ -177,7 +178,7 @@ export default function AccountSettingsPage() {
 
             {/* Social Accounts */}
             {profile?.socialProviders && profile.socialProviders.length > 0 && (
-              <Card className="glass shadow-glass">
+              <Card className="bg-black/20 border-white/5 backdrop-blur-sm animate-fade-in" style={{animationDelay: '0.2s'}}>
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <LinkIcon className="h-5 w-5 mr-2" />
@@ -189,7 +190,7 @@ export default function AccountSettingsPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {profile.socialProviders.map((provider) => (
-                    <div key={provider.provider} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div key={provider.provider} className="flex items-center justify-between p-4 border border-white/10 rounded-lg bg-black/10">
                       <div className="flex items-center space-x-3">
                         <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                           <span className="text-sm font-medium">
@@ -208,6 +209,7 @@ export default function AccountSettingsPage() {
                       <Button
                         variant="outline"
                         size="sm"
+                        className="border-white/10 hover:border-primary/50 hover:bg-primary/5"
                         onClick={() => handleUnlinkProvider(provider.provider)}
                         disabled={(profile.authMethods?.length || 0) <= 1}
                       >
@@ -221,7 +223,7 @@ export default function AccountSettingsPage() {
             )}
 
             {/* Danger Zone */}
-            <Card className="glass shadow-glass border-destructive/20">
+            <Card className="bg-black/20 border-white/5 backdrop-blur-sm border-destructive/20 animate-fade-in" style={{animationDelay: '0.3s'}}>
               <CardHeader>
                 <CardTitle className="flex items-center text-destructive">
                   <Trash2 className="h-5 w-5 mr-2" />
@@ -232,7 +234,7 @@ export default function AccountSettingsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-between p-4 border border-destructive/20 rounded-lg bg-destructive/5">
+                <div className="flex items-center justify-between p-4 border border-destructive/20 rounded-lg bg-destructive/5 backdrop-blur-sm">
                   <div>
                     <h4 className="font-medium text-foreground">Delete Account</h4>
                     <p className="text-sm text-muted-foreground">

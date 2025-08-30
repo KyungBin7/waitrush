@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef, useLayoutEffect } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -413,7 +414,22 @@ const Index = () => {
           {/* Hybrid Category Filter - Collapsible */}
           <div ref={categoryRef} className="mb-8 sm:mb-12 animate-fade-in">
             <div className="max-w-5xl mx-auto px-2 sm:px-0">
-              <div className="gaming-container rounded-xl sm:rounded-2xl shadow-lg">
+              <div className="relative group">
+                {/* Gaming glow effect */}
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-yellow-400 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-300" />
+                <Card className="glass shadow-card-premium relative overflow-hidden">
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5"
+                  animate={{
+                    x: ['-100%', '100%']
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    repeatDelay: 6,
+                    ease: "easeInOut"
+                  }}
+                />
                 {/* Header - Always Visible */}
                 <div 
                   className="p-4 cursor-pointer select-none"
@@ -575,6 +591,7 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
+                </Card>
               </div>
             </div>
           </div>

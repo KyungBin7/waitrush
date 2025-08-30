@@ -293,7 +293,7 @@ const Index = () => {
       <div className="gaming-bg-particles fixed inset-0 z-0" />
       
       {/* Navigation */}
-      <nav className="gaming-nav fixed top-0 left-0 right-0 z-50">
+      <nav className="gaming-nav border-b border-border/50 fixed top-0 left-0 right-0 z-50">
         <div className="responsive-container">
           <div className="flex items-center justify-between h-14 sm:h-16">
             <div className="flex items-center">

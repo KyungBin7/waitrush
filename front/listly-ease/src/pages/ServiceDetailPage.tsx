@@ -453,7 +453,7 @@ const ServiceDetailPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
-        <header className="glass border-b border-border/50 sticky top-0 z-10">
+        <header className="gaming-nav border-b border-border/50 sticky top-0 z-10">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <Skeleton className="h-8 w-20" />
@@ -525,7 +525,7 @@ const ServiceDetailPage = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="glass border-b border-border/50 sticky top-0 z-10">
+      <header className="gaming-nav border-b border-border/50 sticky top-0 z-10">
         <div className="responsive-container max-w-6xl">
           <div className="flex items-center justify-between h-14 sm:h-16">
             <Link to="/" className="flex items-center space-x-1 sm:space-x-2 text-muted-foreground hover:text-foreground transition-colors touch-friendly">

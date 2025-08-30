@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { motion, useMotionValue, useSpring, useInView } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
 import { WaitlistJoinForm } from "@/components/waitlist/WaitlistJoinForm";
 import { waitlistService, WaitlistDetails } from "@/services/waitlist.service";
@@ -6,6 +7,57 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import heroBackground from "@/assets/hero-bg.jpg";
+
+const AnimatedCounter = ({ value, delay = 0 }: { value: number; delay?: number }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const motionValue = useMotionValue(0);
+  const springValue = useSpring(motionValue, {
+    damping: 25,
+    stiffness: 120,
+  });
+  const isInView = useInView(ref, { once: true, margin: "-10px" });
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    if (isInView) {
+      setTimeout(() => {
+        motionValue.set(value);
+      }, delay);
+    }
+  }, [value, isInView, motionValue, delay]);
+
+  useEffect(() => {
+    const unsubscribe = springValue.on("change", (latest) => {
+      const rounded = Math.floor(latest);
+      setDisplayValue(rounded);
+      if (ref.current) {
+        ref.current.textContent = rounded.toLocaleString();
+      }
+    });
+
+    // Immediate fallback
+    if (value > 0) {
+      setDisplayValue(value);
+      if (ref.current) {
+        ref.current.textContent = value.toLocaleString();
+      }
+    }
+
+    return () => unsubscribe();
+  }, [springValue, value]);
+
+  return (
+    <motion.span
+      ref={ref}
+      className="font-bold text-2xl sm:text-3xl bg-gradient-to-r from-primary to-yellow-400 bg-clip-text text-transparent"
+      initial={{ filter: "blur(5px)" }}
+      animate={{ filter: "blur(0px)" }}
+      transition={{ duration: 0.6, delay: 0.1 }}
+    >
+      {displayValue.toLocaleString()}
+    </motion.span>
+  );
+};
 
 export default function WaitlistPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -102,12 +154,12 @@ export default function WaitlistPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden bg-gradient-to-br from-neutral-950 via-yellow-950/5 to-stone-950">
       {/* Back button */}
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-4 left-4 z-20 bg-background/80 backdrop-blur-sm hover:bg-background/90 touch-friendly"
+        className="absolute top-4 left-4 z-20 backdrop-blur-xl bg-black/20 border border-white/10 hover:bg-black/30 hover:border-primary/50 touch-friendly transition-all duration-300"
         onClick={() => navigate(-1)}
       >
         <ArrowLeft className="h-4 w-4" />
@@ -115,14 +167,9 @@ export default function WaitlistPage() {
 
       {/* Dynamic Background */}
       <div 
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ 
-          backgroundImage: waitlistData.background && waitlistData.background.startsWith('#') 
-            ? `linear-gradient(135deg, ${waitlistData.background}, ${waitlistData.background}88)`
-            : `url(${waitlistData.background || heroBackground})`
-        }}
+        className="absolute inset-0 bg-black/20"
       />
-      <div className="absolute inset-0 bg-gradient-to-br from-background/95 to-background/80 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-yellow-500/5" />
       
       {/* Content */}
       <div className="relative z-10 w-full max-w-xs sm:max-w-sm md:max-w-lg lg:max-w-2xl">
@@ -135,9 +182,7 @@ export default function WaitlistPage() {
         {/* Participant Count */}
         <div className="text-center mt-6 sm:mt-8 animate-fade-in">
           <p className="responsive-text-sm text-muted-foreground">
-            <span className="font-semibold text-primary">
-              {waitlistData.currentParticipants.toLocaleString()}
-            </span>{" "}
+            <AnimatedCounter value={waitlistData.currentParticipants} delay={100} />{" "}
             <span className="hidden sm:inline">people have already joined</span>
             <span className="sm:hidden">joined</span>
           </p>

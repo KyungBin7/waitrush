@@ -79,10 +79,7 @@ export function ImageUpload({
       handleUrlChange(uploadedUrl);
       onUploadComplete?.(uploadedUrl);
 
-      toast({
-        title: "Upload Successful",
-        description: response.message,
-      });
+      // Upload success toast removed for better UX
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Upload failed';

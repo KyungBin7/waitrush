@@ -1118,28 +1118,28 @@ const ServiceDetailPage = () => {
                     {/* Left Navigation Area */}
                     <div
                       onClick={goToPreviousImage}
-                      className="absolute left-0 top-0 bottom-0 w-1/3 z-20 cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300"
+                      className="absolute left-0 top-0 bottom-0 w-1/3 z-20 cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gradient-to-r hover:from-black/40 hover:via-black/20 hover:to-transparent group/nav"
                       style={{
                         background: 'linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 70%, transparent 100%)'
                       }}
                       aria-label="Previous image"
                     >
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                        <ChevronLeft className="h-6 w-6 text-white/80 hover:text-primary transition-colors duration-300 drop-shadow-lg" />
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 transition-all duration-300 group-hover/nav:scale-110">
+                        <ChevronLeft className="h-6 w-6 text-white/80 group-hover/nav:text-yellow-400 drop-shadow-lg pointer-events-none transition-colors duration-300" />
                       </div>
                     </div>
                     
                     {/* Right Navigation Area */}
                     <div
                       onClick={goToNextImage}
-                      className="absolute right-0 top-0 bottom-0 w-1/3 z-20 cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300"
+                      className="absolute right-0 top-0 bottom-0 w-1/3 z-20 cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gradient-to-l hover:from-black/40 hover:via-black/20 hover:to-transparent group/nav"
                       style={{
                         background: 'linear-gradient(to left, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 70%, transparent 100%)'
                       }}
                       aria-label="Next image"
                     >
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                        <ChevronRight className="h-6 w-6 text-white/80 hover:text-primary transition-colors duration-300 drop-shadow-lg" />
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 transition-all duration-300 group-hover/nav:scale-110">
+                        <ChevronRight className="h-6 w-6 text-white/80 group-hover/nav:text-yellow-400 drop-shadow-lg pointer-events-none transition-colors duration-300" />
                       </div>
                     </div>
                   </>

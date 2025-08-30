@@ -66,7 +66,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Users, ArrowLeft, Clock, Download, Share2, LogOut, LayoutDashboard, Calendar } from "lucide-react";
+import { Users, ArrowLeft, Clock, Download, Share2, LogOut, LayoutDashboard, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import { WaitlistJoinForm } from "@/components/waitlist/WaitlistJoinForm";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EditableField } from "@/components/ui/EditableField";
@@ -126,6 +126,10 @@ const ServiceDetailPage = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  
+  // Preview navigation state
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const previewContainerRef = useRef<HTMLDivElement>(null);
   
   // Check if current user can edit this service
   const canEdit = isAuthenticated && service && user && service.organizerId === user.id;
@@ -585,6 +589,29 @@ const ServiceDetailPage = () => {
   const screenshots = service.detailImages && service.detailImages.length > 0 
     ? service.detailImages 
     : getDefaultScreenshots();
+
+  // Preview navigation functions
+  const scrollToImage = (index: number) => {
+    if (previewContainerRef.current) {
+      const container = previewContainerRef.current;
+      const imageWidth = container.scrollWidth / screenshots.length;
+      container.scrollTo({
+        left: imageWidth * index,
+        behavior: 'smooth'
+      });
+      setCurrentImageIndex(index);
+    }
+  };
+
+  const goToPreviousImage = () => {
+    const newIndex = currentImageIndex > 0 ? currentImageIndex - 1 : screenshots.length - 1;
+    scrollToImage(newIndex);
+  };
+
+  const goToNextImage = () => {
+    const newIndex = currentImageIndex < screenshots.length - 1 ? currentImageIndex + 1 : 0;
+    scrollToImage(newIndex);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -1084,7 +1111,35 @@ const ServiceDetailPage = () => {
                 </div>
               </div>
             ) : (
-              <div className="flex gap-6 overflow-x-auto pb-4">
+              <div className="relative group">
+                {/* Navigation Buttons */}
+                {screenshots.length > 1 && (
+                  <>
+                    <button
+                      onClick={goToPreviousImage}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 z-20 bg-black/60 hover:bg-black/80 backdrop-blur-sm rounded-full p-3 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 opacity-0 group-hover:opacity-100"
+                      aria-label="Previous image"
+                    >
+                      <ChevronLeft className="h-5 w-5 text-white" />
+                    </button>
+                    <button
+                      onClick={goToNextImage}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 z-20 bg-black/60 hover:bg-black/80 backdrop-blur-sm rounded-full p-3 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 opacity-0 group-hover:opacity-100"
+                      aria-label="Next image"
+                    >
+                      <ChevronRight className="h-5 w-5 text-white" />
+                    </button>
+                  </>
+                )}
+                
+                <div 
+                  ref={previewContainerRef}
+                  className="flex gap-6 overflow-x-auto pb-4"
+                  style={{
+                    scrollbarWidth: 'none',
+                    msOverflowStyle: 'none'
+                  }}
+                >
                 {screenshots.map((screenshot, index) => (
                   <div key={index} className="flex-shrink-0 w-72 sm:w-80 md:w-96 lg:w-[520px] xl:w-[640px]">
                     {isEditMode && canEdit && editingField === `detailImage-${index}` ? (
@@ -1200,6 +1255,7 @@ const ServiceDetailPage = () => {
                     )}
                   </div>
                 )}
+                </div>
               </div>
             )}
           </div>

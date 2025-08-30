@@ -1,5 +1,66 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, useMotionValue, useSpring, useInView } from "framer-motion";
+
+// Fast AnimatedCounter for gaming rush experience
+const AnimatedCounter = ({ value, delay = 0, fast = false }: { value: number; delay?: number; fast?: boolean }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-10px" });
+  const [displayValue, setDisplayValue] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if (isInView && !isAnimating) {
+      setTimeout(() => {
+        setIsAnimating(true);
+        
+        if (fast) {
+          // Fast gaming counter effect - rapid random increments
+          let current = 0;
+          const duration = 1500; // 1.5 seconds
+          const intervals = 50; // Number of updates
+          const intervalTime = duration / intervals;
+          
+          const counter = setInterval(() => {
+            current += Math.floor(Math.random() * (value / intervals * 3)) + 1;
+            if (current >= value) {
+              current = value;
+              setDisplayValue(current);
+              clearInterval(counter);
+              return;
+            }
+            setDisplayValue(current);
+          }, intervalTime);
+        } else {
+          // Original smooth spring animation
+          let current = 0;
+          const increment = value / 60; // 60 frames over 1 second
+          const counter = setInterval(() => {
+            current += increment;
+            if (current >= value) {
+              current = value;
+              setDisplayValue(Math.floor(current));
+              clearInterval(counter);
+              return;
+            }
+            setDisplayValue(Math.floor(current));
+          }, 16);
+        }
+      }, delay);
+    }
+  }, [value, isInView, delay, fast, isAnimating]);
+
+  return (
+    <motion.span
+      ref={ref}
+      className="font-bold text-2xl sm:text-3xl bg-gradient-to-r from-primary to-yellow-400 bg-clip-text text-transparent"
+      initial={{ filter: "blur(5px)", scale: 0.9 }}
+      animate={{ filter: "blur(0px)", scale: 1 }}
+      transition={{ duration: 0.6, delay: 0.1 }}
+    >
+      {displayValue.toLocaleString()}
+    </motion.span>
+  );
+};
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -49,58 +110,7 @@ interface ServiceDetail {
   updatedAt?: string;
 }
 
-// Gaming Counter Animation Component
-const AnimatedCounter = ({ value, delay = 0 }: { value: number; delay?: number }) => {
-  const ref = useRef<HTMLSpanElement>(null);
-  const motionValue = useMotionValue(0);
-  const springValue = useSpring(motionValue, {
-    damping: 25,
-    stiffness: 120,
-  });
-  const isInView = useInView(ref, { once: true, margin: "-10px" });
-  const [displayValue, setDisplayValue] = useState(0);
 
-  useEffect(() => {
-    // 즉시 값을 표시하고 애니메이션 시작
-    if (isInView && value > 0) {
-      motionValue.set(value);
-    }
-  }, [value, isInView, motionValue]);
-
-  useEffect(() => {
-    const unsubscribe = springValue.on("change", (latest) => {
-      const rounded = Math.floor(latest);
-      setDisplayValue(rounded);
-      if (ref.current) {
-        ref.current.textContent = rounded.toLocaleString();
-      }
-    });
-
-    return () => unsubscribe();
-  }, [springValue]);
-
-  // 즉시 표시를 위한 fallback
-  useEffect(() => {
-    if (!isInView && value > 0) {
-      setDisplayValue(value);
-      if (ref.current) {
-        ref.current.textContent = value.toLocaleString();
-      }
-    }
-  }, [value, isInView]);
-
-  return (
-    <motion.span
-      ref={ref}
-      className="font-bold text-2xl sm:text-3xl bg-gradient-to-r from-primary to-yellow-400 bg-clip-text text-transparent"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: delay / 1000, duration: 0.3 }}
-    >
-      {displayValue.toLocaleString()}
-    </motion.span>
-  );
-};
 
 const ServiceDetailPage = () => {
   const { slug } = useParams();
@@ -862,13 +872,7 @@ const ServiceDetailPage = () => {
                       >
                         <Users className="h-4 w-4 text-primary" />
                       </motion.div>
-                      {service.participantCount > 0 ? (
-                        <AnimatedCounter value={service.participantCount || 0} delay={100} />
-                      ) : (
-                        <span className="font-bold text-2xl sm:text-3xl bg-gradient-to-r from-primary to-yellow-400 bg-clip-text text-transparent">
-                          {(service.participantCount || 0).toLocaleString()}
-                        </span>
-                      )}
+                      <AnimatedCounter value={service.participantCount || 0} delay={100} fast={true} />
                       <motion.span 
                         className="text-primary ml-1"
                         animate={{ opacity: [0.5, 1, 0.5] }}
@@ -1487,7 +1491,7 @@ const ServiceDetailPage = () => {
                     ease: "easeInOut"
                   }}
                 >
-                  {(service.participantCount || 0).toLocaleString()}
+                  <AnimatedCounter value={service.participantCount || 0} delay={100} fast={true} />
                 </motion.span>
                 {' '}others who are already rushing in.
               </motion.p>

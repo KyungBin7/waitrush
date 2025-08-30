@@ -8,50 +8,59 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import heroBackground from "@/assets/hero-bg.jpg";
 
-const AnimatedCounter = ({ value, delay = 0 }: { value: number; delay?: number }) => {
+const AnimatedCounter = ({ value, delay = 0, fast = false }: { value: number; delay?: number; fast?: boolean }) => {
   const ref = useRef<HTMLSpanElement>(null);
-  const motionValue = useMotionValue(0);
-  const springValue = useSpring(motionValue, {
-    damping: 25,
-    stiffness: 120,
-  });
   const isInView = useInView(ref, { once: true, margin: "-10px" });
   const [displayValue, setDisplayValue] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    if (isInView) {
+    if (isInView && !isAnimating) {
       setTimeout(() => {
-        motionValue.set(value);
+        setIsAnimating(true);
+        
+        if (fast) {
+          // Fast gaming counter effect - rapid random increments
+          let current = 0;
+          const duration = 1500; // 1.5 seconds
+          const intervals = 50; // Number of updates
+          const intervalTime = duration / intervals;
+          
+          const counter = setInterval(() => {
+            current += Math.floor(Math.random() * (value / intervals * 3)) + 1;
+            if (current >= value) {
+              current = value;
+              setDisplayValue(current);
+              clearInterval(counter);
+              return;
+            }
+            setDisplayValue(current);
+          }, intervalTime);
+        } else {
+          // Original smooth spring animation
+          let current = 0;
+          const increment = value / 60; // 60 frames over 1 second
+          const counter = setInterval(() => {
+            current += increment;
+            if (current >= value) {
+              current = value;
+              setDisplayValue(Math.floor(current));
+              clearInterval(counter);
+              return;
+            }
+            setDisplayValue(Math.floor(current));
+          }, 16);
+        }
       }, delay);
     }
-  }, [value, isInView, motionValue, delay]);
-
-  useEffect(() => {
-    const unsubscribe = springValue.on("change", (latest) => {
-      const rounded = Math.floor(latest);
-      setDisplayValue(rounded);
-      if (ref.current) {
-        ref.current.textContent = rounded.toLocaleString();
-      }
-    });
-
-    // Immediate fallback
-    if (value > 0) {
-      setDisplayValue(value);
-      if (ref.current) {
-        ref.current.textContent = value.toLocaleString();
-      }
-    }
-
-    return () => unsubscribe();
-  }, [springValue, value]);
+  }, [value, isInView, delay, fast, isAnimating]);
 
   return (
     <motion.span
       ref={ref}
       className="font-bold text-2xl sm:text-3xl bg-gradient-to-r from-primary to-yellow-400 bg-clip-text text-transparent"
-      initial={{ filter: "blur(5px)" }}
-      animate={{ filter: "blur(0px)" }}
+      initial={{ filter: "blur(5px)", scale: 0.9 }}
+      animate={{ filter: "blur(0px)", scale: 1 }}
       transition={{ duration: 0.6, delay: 0.1 }}
     >
       {displayValue.toLocaleString()}
@@ -177,12 +186,13 @@ export default function WaitlistPage() {
           waitlistTitle={waitlistData.title}
           waitlistDescription={waitlistData.description}
           onJoin={handleJoin}
+          onJoinAnother={() => navigate('/')}
         />
         
         {/* Participant Count */}
         <div className="text-center mt-6 sm:mt-8 animate-fade-in">
           <p className="responsive-text-sm text-muted-foreground">
-            <AnimatedCounter value={waitlistData.currentParticipants} delay={100} />{" "}
+            <AnimatedCounter value={waitlistData.currentParticipants} delay={100} fast={true} />{" "}
             <span className="hidden sm:inline">people have already joined</span>
             <span className="sm:hidden">joined</span>
           </p>

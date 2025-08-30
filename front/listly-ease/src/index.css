@@ -134,6 +134,13 @@
   html {
     font-size: 20px;
     zoom: 1;
+    /* Hide scrollbar for html element too */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+  
+  html::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
   }
 
   body {
@@ -141,6 +148,23 @@
     background: var(--gradient-hero);
     min-height: 100vh;
     font-size: 20px;
+    /* Hide scrollbar */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+  
+  body::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+  
+  /* Global scrollbar hiding with higher specificity */
+  * {
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* Internet Explorer 10+ */
+  }
+  
+  *::-webkit-scrollbar {
+    display: none !important; /* Safari and Chrome */
   }
 }
 

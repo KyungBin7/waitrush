@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, useMotionValue, useSpring, useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 
 // Fast AnimatedCounter for gaming rush experience
 const AnimatedCounter = ({ value, delay = 0, fast = false }: { value: number; delay?: number; fast?: boolean }) => {
@@ -872,7 +872,7 @@ const ServiceDetailPage = () => {
                       >
                         <Users className="h-4 w-4 text-primary" />
                       </motion.div>
-                      <AnimatedCounter value={service.participantCount || 0} delay={100} fast={true} />
+                      <AnimatedCounter value={service.participantCount || 0} delay={800} fast={true} />
                       <motion.span 
                         className="text-primary ml-1"
                         animate={{ opacity: [0.5, 1, 0.5] }}
@@ -1481,7 +1481,7 @@ const ServiceDetailPage = () => {
               >
                 Be among the first to experience {service.title || service.name}. Join{' '}
                 <motion.span
-                  className="font-semibold text-primary"
+                  className="font-semibold text-primary inline-flex items-center space-x-1"
                   animate={{
                     scale: [1, 1.05, 1]
                   }}
@@ -1491,7 +1491,27 @@ const ServiceDetailPage = () => {
                     ease: "easeInOut"
                   }}
                 >
-                  <AnimatedCounter value={service.participantCount || 0} delay={100} fast={true} />
+                  <motion.div
+                    animate={{ 
+                      scale: [1, 1.1, 1],
+                      rotate: [0, 5, -5, 0]
+                    }}
+                    transition={{ 
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatDelay: 3
+                    }}
+                  >
+                    <Users className="h-4 w-4 text-primary" />
+                  </motion.div>
+                  <AnimatedCounter value={service.participantCount || 0} delay={1400} fast={true} />
+                  <motion.span 
+                    className="text-primary"
+                    animate={{ opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    +
+                  </motion.span>
                 </motion.span>
                 {' '}others who are already rushing in.
               </motion.p>

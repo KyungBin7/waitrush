@@ -5,7 +5,7 @@ import { WaitlistJoinForm } from "@/components/waitlist/WaitlistJoinForm";
 import { waitlistService, WaitlistDetails } from "@/services/waitlist.service";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Users } from "lucide-react";
 import heroBackground from "@/assets/hero-bg.jpg";
 
 const AnimatedCounter = ({ value, delay = 0, fast = false }: { value: number; delay?: number; fast?: boolean }) => {
@@ -192,7 +192,34 @@ export default function WaitlistPage() {
         {/* Participant Count */}
         <div className="text-center mt-6 sm:mt-8 animate-fade-in">
           <p className="responsive-text-sm text-muted-foreground">
-            <AnimatedCounter value={waitlistData.currentParticipants} delay={100} fast={true} />{" "}
+            <motion.span
+              className="inline-flex items-center space-x-1"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
+              <motion.div
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  rotate: [0, 5, -5, 0]
+                }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatDelay: 3
+                }}
+              >
+                <Users className="h-4 w-4 text-primary" />
+              </motion.div>
+              <AnimatedCounter value={waitlistData.currentParticipants} delay={800} fast={true} />
+              <motion.span 
+                className="text-primary"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                +
+              </motion.span>
+            </motion.span>{" "}
             <span className="hidden sm:inline">people have already joined</span>
             <span className="sm:hidden">joined</span>
           </p>

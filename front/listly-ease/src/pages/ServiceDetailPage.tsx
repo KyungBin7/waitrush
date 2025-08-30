@@ -728,7 +728,7 @@ const ServiceDetailPage = () => {
                     asChild
                   >
                     <Link to={`/waitlist/${service.slug}`}>
-                      Join Waitlist
+                      Join Rush
                     </Link>
                   </Button>
                   <DdayCounter launchDate={service.launchDate} />
@@ -743,7 +743,7 @@ const ServiceDetailPage = () => {
               <CardContent className="p-6">
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Waitlist</span>
+                    <span className="text-sm text-muted-foreground">Rush</span>
                     <div className="flex items-center space-x-1">
                       <Users className="h-4 w-4 text-muted-foreground" />
                       <span className="font-semibold">{(service.participantCount || 0).toLocaleString()}</span>
@@ -1196,10 +1196,10 @@ const ServiceDetailPage = () => {
         <Card className="glass shadow-card-premium">
           <CardContent className="p-8 text-center">
             <h3 className="text-2xl font-bold text-foreground mb-3">
-              Ready to join the gaming queue?
+              Ready to join the rush?
             </h3>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Be among the first to experience {service.title || service.name}. Join {(service.participantCount || 0).toLocaleString()} others who are already waiting.
+              Be among the first to experience {service.title || service.name}. Join {(service.participantCount || 0).toLocaleString()} others who are already rushing in.
             </p>
             <Button 
               size="lg" 
@@ -1207,7 +1207,7 @@ const ServiceDetailPage = () => {
               asChild
             >
               <Link to={`/waitlist/${service.slug}`}>
-                Join Waitlist Now
+                Join Rush Now
               </Link>
             </Button>
           </CardContent>

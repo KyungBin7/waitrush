@@ -360,7 +360,7 @@ const Index = () => {
               </span>
             </h1>
             <p className="responsive-text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-              Join gaming queues for the most exciting new products and services. Get priority access when they launch.
+              Join the rush for the most exciting new products and services. Get priority access when they launch.
             </p>
           </div>
 
@@ -372,7 +372,7 @@ const Index = () => {
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-primary h-5 w-5 z-10" />
                 <Input
                   type="text"
-                  placeholder="Search for amazing gaming queues..."
+                  placeholder="Search for amazing rushing opportunities..."
                   value={searchInput}
                   onChange={(e) => {
                     const value = e.target.value;
@@ -582,7 +582,7 @@ const Index = () => {
           {/* Results Count */}
           {(searchQuery || selectedMainCategory !== 'all' || selectedSubCategory !== 'all') && (
             <div className="text-center mb-6 text-muted-foreground">
-              Found {filteredWaitlists.length} {filteredWaitlists.length === 1 ? 'queue' : 'queues'}
+              Found {filteredWaitlists.length} {filteredWaitlists.length === 1 ? 'rush' : 'rushes'}
               {selectedMainCategory !== 'all' && ` in ${CATEGORY_CONFIG.find(cat => cat.id === selectedMainCategory)?.name || selectedMainCategory}`}
               {selectedSubCategory !== 'all' && ` - ${selectedSubCategory}`}
               {searchQuery && ` matching "${searchQuery}"`}
@@ -844,7 +844,7 @@ const Index = () => {
                       asChild
                     >
                       <Link to={`/waitlist/${waitlist.slug}`}>
-                        Join Waitlist
+                        Join Rush
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
@@ -857,10 +857,10 @@ const Index = () => {
               <Card className="gaming-layer-card shadow-glass inline-block">
                 <CardContent className="py-8 px-12">
                   <h3 className="text-xl font-semibold text-foreground mb-2">
-                    No gaming queues found
+                    No rushes found
                   </h3>
                   <p className="text-muted-foreground">
-                    {searchQuery ? `No results for "${searchQuery}"` : 'No gaming queues in this category'}
+                    {searchQuery ? `No results for "${searchQuery}"` : 'No rushes in this category'}
                   </p>
                   {(searchQuery || selectedMainCategory !== 'all' || selectedSubCategory !== 'all') && (
                     <Button 
@@ -894,10 +894,10 @@ const Index = () => {
                     // Show dashboard CTA for authenticated users
                     <>
                       <h3 className="text-2xl font-bold text-foreground mb-3">
-                        Manage your gaming queues
+                        Manage your rushes
                       </h3>
                       <p className="text-muted-foreground mb-6">
-                        Go to your dashboard to create and manage your gaming queue services
+                        Go to your dashboard to create and manage your rush services
                       </p>
                       <Button variant="outline" size="lg" asChild>
                         <Link to="/dashboard">
@@ -910,10 +910,10 @@ const Index = () => {
                     // Show signup CTA for unauthenticated users
                     <>
                       <h3 className="text-2xl font-bold text-foreground mb-3">
-                        Want to create your own gaming queue?
+                        Want to create your own rush?
                       </h3>
                       <p className="text-muted-foreground mb-6">
-                        Build anticipation for your product with beautiful gaming queue pages
+                        Build anticipation for your product with beautiful rush pages
                       </p>
                       <Button variant="outline" size="lg" asChild>
                         <Link to="/signup">

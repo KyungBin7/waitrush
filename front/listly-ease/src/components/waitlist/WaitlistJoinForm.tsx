@@ -40,7 +40,7 @@ export function WaitlistJoinForm({
           <CheckCircle className="w-7 h-7 sm:w-8 sm:h-8 text-green-600" />
         </div>
         <h3 className="responsive-text-2xl font-semibold text-foreground mb-2">
-          You're on the list!
+          You're in the Rush!
         </h3>
         <p className="responsive-text-base text-muted-foreground mb-6">
           We'll notify you when {waitlistTitle} launches.
@@ -50,7 +50,7 @@ export function WaitlistJoinForm({
           onClick={() => setIsJoined(false)}
           className="touch-friendly-md responsive-text-sm"
         >
-          <span className="hidden sm:inline">Join Another Waitlist</span>
+          <span className="hidden sm:inline">Join Another Rush</span>
           <span className="sm:hidden">Join Another</span>
         </Button>
       </div>
@@ -86,7 +86,7 @@ export function WaitlistJoinForm({
           className="w-full touch-friendly-lg"
           disabled={isLoading}
         >
-          {isLoading ? "Joining..." : "Join Waitlist"}
+          {isLoading ? "Rushing In..." : "Join the Rush"}
         </Button>
       </form>
 

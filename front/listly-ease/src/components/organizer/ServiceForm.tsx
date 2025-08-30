@@ -188,6 +188,7 @@ export function ServiceForm({ onSuccess, onCancel }: ServiceFormProps) {
       toast({
         title: "Success",
         description: `Service "${service.name}" created successfully!`,
+        duration: 3000,
       });
       
       if (onSuccess) {
@@ -200,6 +201,7 @@ export function ServiceForm({ onSuccess, onCancel }: ServiceFormProps) {
         title: "Error",
         description: errorMessage,
         variant: "destructive",
+        duration: 4000,
       });
     } finally {
       setIsLoading(false);

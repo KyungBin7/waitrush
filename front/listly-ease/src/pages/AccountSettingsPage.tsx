@@ -69,6 +69,7 @@ export default function AccountSettingsPage() {
         toast({
           title: "Provider unlinked",
           description: `${provider.charAt(0).toUpperCase() + provider.slice(1)} account has been unlinked.`,
+          duration: 3000,
         });
         
         // Reload profile
@@ -82,6 +83,7 @@ export default function AccountSettingsPage() {
         title: "Failed to unlink",
         description: error instanceof Error ? error.message : "Failed to unlink provider",
         variant: "destructive",
+        duration: 4000,
       });
     }
   };

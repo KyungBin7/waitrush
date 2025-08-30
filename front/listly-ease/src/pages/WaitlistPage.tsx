@@ -108,6 +108,7 @@ export default function WaitlistPage() {
         title: "Error",
         description: "Invalid waitlist URL",
         variant: "destructive",
+        duration: 4000,
       });
       return;
     }
@@ -118,6 +119,7 @@ export default function WaitlistPage() {
       toast({
         title: "Success!",
         description: "You've successfully joined the waitlist. We'll be in touch soon!",
+        duration: 3000,
       });
       
       // Update participant count
@@ -135,6 +137,7 @@ export default function WaitlistPage() {
         title: "Error",
         description: errorMessage,
         variant: "destructive",
+        duration: 4000,
       });
     }
   };

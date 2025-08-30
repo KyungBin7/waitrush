@@ -52,6 +52,7 @@ export function ImageUpload({
         title: "Upload Error",
         description: errorMessage,
         variant: "destructive",
+        duration: 4000,
       });
       onUploadError?.(errorMessage);
       return;
@@ -88,6 +89,7 @@ export function ImageUpload({
         title: "Upload Failed",
         description: errorMessage,
         variant: "destructive",
+        duration: 4000,
       });
       
       onUploadError?.(errorMessage);

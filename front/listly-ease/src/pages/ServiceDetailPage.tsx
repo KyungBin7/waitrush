@@ -150,6 +150,7 @@ const ServiceDetailPage = () => {
           title: "Authentication Required",
           description: "Please log in to edit services.",
           variant: "destructive",
+          duration: 4000,
         });
         return;
       }
@@ -169,6 +170,7 @@ const ServiceDetailPage = () => {
           title: "Access Denied",
           description: "You can only edit services you created.",
           variant: "destructive",
+          duration: 4000,
         });
       } else {
         console.log("Permission check passed!");
@@ -459,6 +461,7 @@ const ServiceDetailPage = () => {
         title: "✅ Success",
         description: "Service updated successfully!",
         className: "border border-primary/50 bg-gradient-to-r from-primary/20 to-yellow-400/20 backdrop-blur-sm shadow-xl shadow-primary/30 text-foreground font-semibold",
+        duration: 3000,
       });
     } catch (err) {
       console.error("Manual save error:", err);
@@ -466,6 +469,7 @@ const ServiceDetailPage = () => {
         title: "Error",
         description: "Failed to save service. Please try again.",
         variant: "destructive",
+        duration: 4000,
       });
     } finally {
       setIsSaving(false);

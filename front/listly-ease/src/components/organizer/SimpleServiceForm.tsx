@@ -128,6 +128,7 @@ export function SimpleServiceForm({ onSuccess, onCancel }: SimpleServiceFormProp
       toast({
         title: "Success",
         description: `Service "${service.name}" created! You can now edit it directly.`,
+        duration: 3000,
       });
       
       // Small delay to ensure server-side data is fully ready before redirecting
@@ -143,6 +144,7 @@ export function SimpleServiceForm({ onSuccess, onCancel }: SimpleServiceFormProp
         title: "Error",
         description: errorMessage,
         variant: "destructive",
+        duration: 4000,
       });
     } finally {
       setIsLoading(false);

@@ -57,6 +57,7 @@ export default function DashboardPage() {
         title: "Error",
         description: errorMessage,
         variant: "destructive",
+        duration: 4000,
       });
     } finally {
       setIsLoading(false);
@@ -69,6 +70,7 @@ export default function DashboardPage() {
       toast({
         title: "Success",
         description: `CSV file downloaded for ${service.name}`,
+        duration: 3000,
       });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to download CSV';
@@ -76,6 +78,7 @@ export default function DashboardPage() {
         title: "Error",
         description: errorMessage,
         variant: "destructive",
+        duration: 4000,
       });
     }
   };

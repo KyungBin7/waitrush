@@ -39,6 +39,7 @@ export function SocialSignupForm() {
         title: "Invalid signup link",
         description: "Please try signing up again.",
         variant: "destructive",
+        duration: 4000,
       });
       navigate("/signup");
       return;
@@ -63,6 +64,7 @@ export function SocialSignupForm() {
         title: "Please agree to the terms",
         description: "You must agree to the terms of service to continue.",
         variant: "destructive",
+        duration: 4000,
       });
       return;
     }
@@ -72,6 +74,7 @@ export function SocialSignupForm() {
         title: "Missing information",
         description: "Please try signing up again.",
         variant: "destructive",
+        duration: 4000,
       });
       return;
     }
@@ -95,6 +98,7 @@ export function SocialSignupForm() {
       toast({
         title: "Welcome to WaitRush Gaming Queue!",
         description: "Your account has been created successfully.",
+        duration: 3000,
       });
       navigate("/dashboard");
     } catch (error) {
@@ -102,6 +106,7 @@ export function SocialSignupForm() {
         title: "Signup failed",
         description: error instanceof Error ? error.message : "Failed to create account. Please try again.",
         variant: "destructive",
+        duration: 4000,
       });
     } finally {
       setIsLoading(false);

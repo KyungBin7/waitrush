@@ -36,6 +36,7 @@ export function DeleteAccountDialog({ trigger }: DeleteAccountDialogProps) {
         title: "Confirmation required",
         description: "Please type 'DELETE' to confirm account deletion.",
         variant: "destructive",
+        duration: 4000,
       });
       return;
     }
@@ -47,6 +48,7 @@ export function DeleteAccountDialog({ trigger }: DeleteAccountDialogProps) {
       toast({
         title: "Account deleted",
         description: "Your account has been permanently deleted.",
+        duration: 3000,
       });
       setIsOpen(false);
       navigate("/");
@@ -55,6 +57,7 @@ export function DeleteAccountDialog({ trigger }: DeleteAccountDialogProps) {
         title: "Deletion failed",
         description: error instanceof Error ? error.message : "Failed to delete account. Please try again.",
         variant: "destructive",
+        duration: 4000,
       });
     } finally {
       setIsDeleting(false);

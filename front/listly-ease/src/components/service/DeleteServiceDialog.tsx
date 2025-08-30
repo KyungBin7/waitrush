@@ -35,6 +35,7 @@ export function DeleteServiceDialog({ service, onDeleted, trigger }: DeleteServi
         title: "Confirmation required",
         description: `Please type "${service.name}" exactly to confirm service deletion.`,
         variant: "destructive",
+        duration: 4000,
       });
       return;
     }
@@ -46,6 +47,7 @@ export function DeleteServiceDialog({ service, onDeleted, trigger }: DeleteServi
       toast({
         title: "Service deleted",
         description: `${service.name} has been permanently deleted.`,
+        duration: 3000,
       });
       setIsOpen(false);
       setConfirmText("");
@@ -55,6 +57,7 @@ export function DeleteServiceDialog({ service, onDeleted, trigger }: DeleteServi
         title: "Deletion failed",
         description: error instanceof Error ? error.message : "Failed to delete service. Please try again.",
         variant: "destructive",
+        duration: 4000,
       });
     } finally {
       setIsDeleting(false);

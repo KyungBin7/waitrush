@@ -30,6 +30,7 @@ export function OAuthCallback({ provider, onAuthSuccess }: OAuthCallbackProps) {
             title: "Authentication failed",
             description: errorMessage,
             variant: "destructive",
+            duration: 4000,
           });
           navigate("/login");
           return;
@@ -41,6 +42,7 @@ export function OAuthCallback({ provider, onAuthSuccess }: OAuthCallbackProps) {
             title: "Authentication failed", 
             description: "No authorization code received.",
             variant: "destructive",
+            duration: 4000,
           });
           navigate("/login");
           return;
@@ -53,6 +55,7 @@ export function OAuthCallback({ provider, onAuthSuccess }: OAuthCallbackProps) {
               title: "Authentication failed",
               description: "Missing security state. Please try again.",
               variant: "destructive",
+              duration: 4000,
             });
             navigate("/login");
             return;
@@ -63,6 +66,7 @@ export function OAuthCallback({ provider, onAuthSuccess }: OAuthCallbackProps) {
               title: "Authentication failed",
               description: "Invalid security state. Please try again.",
               variant: "destructive",
+              duration: 4000,
             });
             navigate("/login");
             return;
@@ -78,6 +82,7 @@ export function OAuthCallback({ provider, onAuthSuccess }: OAuthCallbackProps) {
             title: `${capitalize(provider)} OAuth`,
             description: "Backend OAuth integration pending implementation",
             variant: "destructive",
+            duration: 4000,
           });
           navigate("/login");
         }
@@ -87,6 +92,7 @@ export function OAuthCallback({ provider, onAuthSuccess }: OAuthCallbackProps) {
           title: "Authentication failed",
           description: error instanceof Error ? error.message : "Failed to complete authentication",
           variant: "destructive",
+          duration: 4000,
         });
         navigate("/login");
       } finally {

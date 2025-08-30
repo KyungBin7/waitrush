@@ -34,6 +34,7 @@ export function SignupForm() {
         title: "Password mismatch",
         description: "Passwords don't match. Please try again.",
         variant: "destructive",
+        duration: 4000,
       });
       return;
     }
@@ -45,6 +46,7 @@ export function SignupForm() {
       toast({
         title: "Account created successfully",
         description: "Your account has been created. Please log in.",
+        duration: 3000,
       });
       navigate("/login");
     } catch (error) {
@@ -52,6 +54,7 @@ export function SignupForm() {
         title: "Signup failed",
         description: error instanceof Error ? error.message : "Failed to create account. Please try again.",
         variant: "destructive",
+        duration: 4000,
       });
     } finally {
       setIsLoading(false);

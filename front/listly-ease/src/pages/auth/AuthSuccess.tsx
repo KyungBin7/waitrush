@@ -25,6 +25,7 @@ export default function AuthSuccess() {
           title: 'Authentication failed',
           description: error || 'An error occurred during authentication',
           variant: 'destructive',
+          duration: 4000,
         });
         return;
       }
@@ -41,6 +42,7 @@ export default function AuthSuccess() {
           toast({
             title: 'Login successful',
             description: 'You have been successfully authenticated',
+            duration: 3000,
           });
 
           // Redirect to dashboard after a brief delay
@@ -53,6 +55,7 @@ export default function AuthSuccess() {
             title: 'Authentication failed',
             description: 'Failed to process authentication token',
             variant: 'destructive',
+            duration: 4000,
           });
         }
       } else {
@@ -61,6 +64,7 @@ export default function AuthSuccess() {
           title: 'Authentication failed',
           description: 'No authentication token received',
           variant: 'destructive',
+          duration: 4000,
         });
       }
     };

@@ -31,6 +31,7 @@ export function LoginForm() {
       toast({
         title: "Login successful",
         description: "Welcome back! Redirecting to dashboard...",
+        duration: 3000,
       });
       navigate("/dashboard");
     } catch (error) {
@@ -38,6 +39,7 @@ export function LoginForm() {
         title: "Login failed",
         description: error instanceof Error ? error.message : "Invalid credentials. Please try again.",
         variant: "destructive",
+        duration: 4000,
       });
     } finally {
       setIsLoading(false);

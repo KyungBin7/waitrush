@@ -663,12 +663,17 @@ const ServiceDetailPage = () => {
                   )}
                   onClick={() => isEditMode && canEdit && setEditingField('iconImage')}
                 >
-                  <Avatar className="w-24 h-24 lg:w-32 lg:h-32 rounded-2xl shadow-xl">
+                  <div className="relative p-1 rounded-2xl" style={{
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(0,0,0,0.02) 50%, rgba(255,255,255,0.05) 100%)',
+                    backdropFilter: 'blur(0.5px)'
+                  }}>
+                    <Avatar className="w-24 h-24 lg:w-32 lg:h-32 rounded-2xl shadow-lg">
                     <AvatarImage src={serviceImage} alt={service.title || service.name} />
                     <AvatarFallback className="text-2xl font-bold bg-gradient-primary text-primary-foreground rounded-2xl">
                       {(service.name)?.substring(0, 2).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
+                  </div>
                   {isEditMode && (
                     <div className="absolute inset-0 bg-black/50 rounded-2xl flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                       <span className="text-white text-sm font-medium">Click to edit</span>
@@ -905,7 +910,16 @@ const ServiceDetailPage = () => {
                     ) : (
                       <div 
                         className={cn(
-                          "relative aspect-[9:19.4] sm:aspect-[3:4] lg:aspect-[16:10] rounded-2xl overflow-hidden shadow-lg transition-all duration-300",
+                          "relative p-1 rounded-2xl transition-all duration-300"
+                        )}
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(0,0,0,0.02) 50%, rgba(255,255,255,0.05) 100%)',
+                          backdropFilter: 'blur(0.5px)'
+                        }}
+                      >
+                        <div 
+                          className={cn(
+                            "relative aspect-[9:19.4] sm:aspect-[3:4] lg:aspect-[16:10] rounded-xl overflow-hidden shadow-lg transition-all duration-300",
                           isEditMode && canEdit 
                             ? "border-2 border-dashed border-muted-foreground/40 cursor-pointer hover:border-primary/60 hover:bg-muted/10"
                             : ""
@@ -922,6 +936,7 @@ const ServiceDetailPage = () => {
                             <span className="text-white text-sm font-medium">Click to edit</span>
                           </div>
                         )}
+                      </div>
                       </div>
                     )}
                   </div>

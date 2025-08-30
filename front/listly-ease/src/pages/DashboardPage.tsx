@@ -9,6 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { waitlistService, Service } from "@/services/waitlist.service";
 import { useToast } from "@/hooks/use-toast";
 import { DeleteServiceDialog } from "@/components/service/DeleteServiceDialog";
+import waitrushLogo from "@/assets/waitrush-logo.png";
 
 export default function DashboardPage() {
   const { logout, user } = useAuth();
@@ -93,9 +94,13 @@ export default function DashboardPage() {
       <header className="glass border-b border-border/50 sticky top-0 z-10">
         <div className="responsive-container">
           <div className="flex items-center justify-between h-14 sm:h-16">
-            <h1 className="text-lg sm:text-xl font-semibold text-foreground">
-              WaitRush Gaming Queue
-            </h1>
+            <Link to="/" className="flex items-center">
+              <img 
+                src={waitrushLogo} 
+                alt="WaitRush Gaming Queue" 
+                className="waitrush-logo h-40 sm:h-48 w-auto"
+              />
+            </Link>
             <div className="flex items-center space-x-2 sm:space-x-4">
               <Button variant="ghost" size="sm" className="touch-friendly-sm" asChild>
                 <Link to="/">

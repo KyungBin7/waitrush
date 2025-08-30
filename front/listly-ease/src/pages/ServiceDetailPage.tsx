@@ -1118,7 +1118,7 @@ const ServiceDetailPage = () => {
                     {/* Left Navigation Area */}
                     <div
                       onClick={goToPreviousImage}
-                      className="absolute left-0 top-0 bottom-0 w-1/3 z-20 cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gradient-to-r hover:from-black/40 hover:via-black/20 hover:to-transparent group/nav"
+                      className="absolute left-0 top-0 bottom-0 w-[20%] z-20 cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gradient-to-r hover:from-black/40 hover:via-black/20 hover:to-transparent group/nav"
                       style={{
                         background: 'linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 70%, transparent 100%)'
                       }}
@@ -1132,7 +1132,7 @@ const ServiceDetailPage = () => {
                     {/* Right Navigation Area */}
                     <div
                       onClick={goToNextImage}
-                      className="absolute right-0 top-0 bottom-0 w-1/3 z-20 cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gradient-to-l hover:from-black/40 hover:via-black/20 hover:to-transparent group/nav"
+                      className="absolute right-0 top-0 bottom-0 w-[20%] z-20 cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-gradient-to-l hover:from-black/40 hover:via-black/20 hover:to-transparent group/nav"
                       style={{
                         background: 'linear-gradient(to left, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 70%, transparent 100%)'
                       }}

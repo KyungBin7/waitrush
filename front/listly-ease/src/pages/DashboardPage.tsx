@@ -89,9 +89,9 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-hero">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-950 via-yellow-950/5 to-stone-950">
       {/* Header */}
-      <header className="glass border-b border-border/50 sticky top-0 z-10">
+      <header className="backdrop-blur-xl bg-black/20 border-b border-white/5 sticky top-0 z-10">
         <div className="responsive-container">
           <div className="flex items-center justify-between h-14 sm:h-16">
             <Link to="/" className="flex items-center">
@@ -178,7 +178,7 @@ export default function DashboardPage() {
             </div>
             
             {!isLoading && services.length === 0 ? (
-              <Card className="glass text-center py-12">
+              <Card className="bg-black/20 border-white/5 text-center py-12 backdrop-blur-sm">
                 <CardContent>
                   <Plus className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                   <h4 className="text-lg font-semibold mb-2">No services yet</h4>
@@ -196,7 +196,7 @@ export default function DashboardPage() {
             ) : (
               <div className="responsive-grid-cols-3 px-2 sm:px-0">
                 {services.map((service, index) => (
-                  <Card key={service.id} className="glass shadow-card-premium animate-fade-in hover:shadow-glass transition-all duration-300 hover:-translate-y-1" style={{animationDelay: `${index * 0.1}s`}}>
+                  <Card key={service.id} className="bg-black/20 border-white/5 backdrop-blur-sm animate-fade-in hover:bg-black/30 hover:border-primary/20 transition-all duration-300 hover:-translate-y-1" style={{animationDelay: `${index * 0.1}s`}}>
                     <CardHeader>
                       <div className="flex items-start justify-between">
                         <div>
@@ -206,7 +206,7 @@ export default function DashboardPage() {
                           </CardDescription>
                         </div>
                         <div className="flex items-center space-x-1">
-                          <div className="w-2 h-2 rounded-full bg-green-500" />
+                          <div className="w-2 h-2 rounded-full bg-primary" />
                           <span className="text-xs text-muted-foreground">
                             Active
                           </span>
@@ -224,7 +224,7 @@ export default function DashboardPage() {
                       </div>
                       
                       <div className="space-y-2">
-                        <Button variant="outline" size="sm" className="w-full" asChild>
+                        <Button variant="outline" size="sm" className="w-full border-white/10 hover:border-primary/50 hover:bg-primary/5" asChild>
                           <Link to={`/service/${service.slug}`}>
                             <Settings className="h-4 w-4 mr-2" />
                             View Service Details

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Users, ArrowRight, ExternalLink, Eye, LayoutDashboard, LogOut, Search, ChevronDown, Filter } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { cn } from "@/lib/utils";
 import { waitlistService } from "@/services/waitlist.service";
 import heroBackground from "@/assets/hero-bg.jpg";
 import premiumAppImage from "@/assets/premium-app.jpg";
@@ -610,264 +611,284 @@ const Index = () => {
           {filteredWaitlists.length > 0 ? (
             <div 
               key={animationKey}
-              className="responsive-grid-cols-3 px-2 sm:px-0"
+              className="space-y-6"
             >
-              {filteredWaitlists.map((waitlist, index) => (
-                <Card 
-                  key={waitlist.id}
-                  variant="interactive"
-                  className="waitlist-card relative shadow-card-premium hover:shadow-2xl transition-all duration-500 group overflow-hidden"
-                  style={{
-                    animationDelay: `${index * 140}ms`,
-                    animation: `cardElegantFade 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards`,
-                    opacity: 0,
-                    transform: 'scale(0.95)'
-                  }}
-                >
-                  <Link to={`/service/${waitlist.slug}`} className="block">
-                    <div className="relative h-48 overflow-hidden">
-                      <img 
-                        src={waitlist.image} 
-                        alt={waitlist.name}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      <div className="absolute top-3 right-2 transform transition-all duration-300 group-hover:scale-110">
-{waitlist.categories?.length ? (() => {
-                          const mainCategory = findMainCategory(waitlist.categories);
-                          const displayCategories = [];
-                          
-                          // Always show main category first if it exists
-                          if (mainCategory) {
-                            displayCategories.push({
-                              name: mainCategory,
-                              isMain: true
-                            });
-                          }
-                          
-                          // Add top subcategory if different from main  
-                          const topSubcategory = waitlist.categories.find(cat => cat !== mainCategory);
-                          if (topSubcategory && displayCategories.length < 2) {
-                            displayCategories.push({
-                              name: topSubcategory,
-                              isMain: false
-                            });
-                          }
-                          
-                          // For display, we show only 1 category initially  
-                          const totalCategories = waitlist.categories.length;
-                          const displayedCount = 1; // We only show 1 category initially
-                          const remainingCount = totalCategories - displayedCount;
-                          const isExpanded = expandedCard === waitlist.id;
-                          const hasMoreCategories = totalCategories >= 1;
-                          
-                          const handleCategoryInteraction = (e: React.MouseEvent) => {
-                            e.preventDefault();
-                            e.stopPropagation();
+              {/* Gaming Leaderboard Layout */}
+              {(() => {
+                // Sort by participant count for leaderboard
+                const sortedWaitlists = [...filteredWaitlists].sort((a, b) => b.participantCount - a.participantCount);
+                const topThree = sortedWaitlists.slice(0, 3);
+                const remaining = sortedWaitlists.slice(3);
+                
+                return (
+                  <>
+                    {/* Podium Section - Top 3 */}
+                    {topThree.length > 0 && (
+                      <div className="mb-8">
+                        <motion.div
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6 }}
+                          className="text-center mb-6"
+                        >
+                          <h2 className="text-2xl font-bold text-foreground mb-2 flex items-center justify-center gap-2">
+                            <span className="text-primary">⚡</span>
+                            RUSH LEADERBOARD
+                            <span className="text-primary">⚡</span>
+                          </h2>
+                          <p className="text-muted-foreground text-sm">Top gaming queues ranked by rush power</p>
+                        </motion.div>
+                        
+                        <div className="grid md:grid-cols-3 gap-4 md:gap-6">
+                          {topThree.map((waitlist, index) => {
+                            const rank = index + 1;
+                            const medals = ['🥇', '🥈', '🥉'];
+                            const rankColors = ['text-yellow-400', 'text-gray-400', 'text-amber-600'];
+                            const glowColors = ['shadow-yellow-400/20', 'shadow-gray-400/20', 'shadow-amber-600/20'];
                             
-                            if (isMobile && hasMoreCategories) {
-                              // Mobile: Toggle expansion
-                              setExpandedCard(isExpanded ? null : waitlist.id);
-                            }
-                          };
-                          
-                          const handleCategoryFilter = (categoryName: string, isMain: boolean) => {
-                            if (isMain) {
-                              // Find the category ID that contains this subcategory
-                              const categoryConfig = CATEGORY_CONFIG.find(config => 
-                                config.name === categoryName || 
-                                config.subcategories.some(sub => 
-                                  waitlist.categories?.includes(sub)
-                                )
-                              );
-                              if (categoryConfig) {
-                                setSelectedMainCategory(categoryConfig.id);
-                              }
-                              setSelectedSubCategory('all');
-                            } else {
-                              setSelectedSubCategory(categoryName);
-                            }
-                          };
-                          
-                          return (
-                            <div className="relative" data-category-container>
-                              {/* Main category display */}
-                              <div 
-                                className={`
-                                  flex items-center gap-1 cursor-pointer justify-end
-                                  ${isMobile ? 'touch-manipulation' : ''}
-                                `}
-                                onClick={handleCategoryInteraction}
-                              >
-                                {displayCategories.slice(0, 1).map((cat, idx) => (
-                                  <span 
-                                    key={idx}
-                                    className={`px-2 py-1 text-xs font-semibold rounded-full backdrop-blur-md shadow-lg transition-all hover:brightness-110 ${
-                                      cat.isMain 
-                                        ? 'bg-gradient-to-r from-primary to-primary-glow text-primary-foreground border border-primary/20'
-                                        : 'bg-white/90 dark:bg-gray-800/90 text-primary border border-primary/30'
-                                    }`}
-                                    onClick={(e) => {
-                                      if (!isMobile || !hasMoreCategories) {
-                                        e.stopPropagation();
-                                        handleCategoryFilter(cat.name, cat.isMain);
-                                      }
-                                    }}
-                                  >
-                                    {cat.name}
-                                  </span>
-                                ))}
-                                
-                                {/* Mobile only indicators */}
-                                {hasMoreCategories && isMobile && (
-                                  <>
-                                    <span className="text-white/80 text-xs ml-1 transition-transform duration-200">
-                                      {isExpanded ? '×' : '⋯'}
-                                    </span>
-                                    {/* Mobile counter badge */}
-                                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500/90 rounded-full text-xs text-white flex items-center justify-center font-bold backdrop-blur-sm">
-                                      {totalCategories}
-                                    </div>
-                                  </>
+                            return (
+                              <motion.div
+                                key={waitlist.id}
+                                initial={{ opacity: 0, scale: 0.8, y: 50 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                transition={{ 
+                                  duration: 0.8, 
+                                  delay: index * 0.2,
+                                  type: "spring",
+                                  bounce: 0.4 
+                                }}
+                                className={cn(
+                                  "relative group cursor-pointer transform transition-all duration-500",
+                                  index === 0 ? "md:scale-110" : "md:scale-100 md:hover:scale-105"
                                 )}
-                              </div>
-                              
-                              {/* Expanded categories - Notification Center Style */}
-                              {hasMoreCategories && (
-                                <div className={`
-                                  absolute z-30
-                                  ${isMobile 
-                                    ? `top-full mt-3 right-0 transform transition-all duration-300 ease-out ${
-                                        isExpanded ? 'scale-100 opacity-100 translate-y-0' : 'scale-98 opacity-0 translate-y-2 pointer-events-none'
-                                      }`
-                                    : 'top-full mt-3 right-0 opacity-0 scale-98 translate-y-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-250 ease-out pointer-events-none group-hover:pointer-events-auto'
-                                  }
-                                `}>
-                                  
-                                  {/* Notification Card Container */}
-                                  <div className="bg-background/95 dark:bg-card/95 rounded-lg shadow-lg border border-primary/20 backdrop-blur-sm overflow-hidden w-40">
-                                    
-                                    {/* Card Header */}
-                                    <div className="px-2 py-1 bg-primary/5 dark:bg-primary/10 border-b border-primary/15">
-                                      <div className="flex items-center gap-1.5">
-                                        <div className="w-1 h-1 rounded-full bg-primary"></div>
-                                        <span className="text-xs font-medium text-foreground">
-                                          All Categories
-                                        </span>
-                                        <span className="ml-auto text-xs text-muted-foreground">
-                                          {waitlist.categories.length}
-                                        </span>
-                                      </div>
+                              >
+                                <Link to={`/service/${waitlist.slug}`} className="block">
+                                  <Card className={cn(
+                                    "relative overflow-hidden border-2 transition-all duration-500",
+                                    "bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-md",
+                                    "hover:shadow-2xl hover:shadow-primary/30 hover:border-primary/60",
+                                    glowColors[index],
+                                    index === 0 ? "border-primary/50" : "border-border/30 hover:border-primary/40"
+                                  )}>
+                                    {/* Rank Badge */}
+                                    <div className={cn(
+                                      "absolute -top-3 -left-3 w-12 h-12 rounded-full flex items-center justify-center text-2xl font-bold z-10",
+                                      "bg-gradient-to-br from-background to-card border-2",
+                                      index === 0 ? "border-primary" : "border-muted-foreground/30"
+                                    )}>
+                                      {medals[index]}
                                     </div>
                                     
-                                    {/* Categories List */}
-                                    <div className="py-0.5">
-                                      {waitlist.categories.map((categoryName, idx) => {
-                                        const isMainCat = categoryName === mainCategory;
-                                        return (
-                                          <div
-                                            key={idx}
-                                            className={`
-                                              px-2 py-1 cursor-pointer transition-all duration-150
-                                              ${isMainCat 
-                                                ? 'bg-primary/10 dark:bg-primary/20 border-l-2 border-primary text-primary dark:text-primary' 
-                                                : 'hover:bg-primary/5 dark:hover:bg-primary/10 text-foreground'
-                                              }
-                                            `}
-                                            onClick={(e) => {
-                                              e.preventDefault();
-                                              e.stopPropagation();
-                                              handleCategoryFilter(categoryName, isMainCat);
-                                              if (isMobile) {
-                                                setExpandedCard(null);
-                                              }
-                                            }}
-                                          >
-                                            <div className="flex items-center justify-between">
-                                              <span className="text-xs font-medium">
-                                                {categoryName}
-                                              </span>
-                                              {isMainCat && (
-                                                <div className="flex items-center gap-1">
-                                                  <span className="text-xs text-primary dark:text-primary font-medium">Main</span>
-                                                  <div className="w-1 h-1 rounded-full bg-primary"></div>
-                                                </div>
-                                              )}
-                                            </div>
+                                    {/* Lightning Effect Corner */}
+                                    <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden">
+                                      <div className={cn(
+                                        "absolute -top-8 -right-8 w-16 h-16 rotate-45",
+                                        "bg-gradient-to-br from-primary/20 to-transparent",
+                                        "transition-all duration-300 group-hover:from-primary/40"
+                                      )} />
+                                    </div>
+                                    
+                                    <CardContent className="p-6">
+                                      {/* Service Icon */}
+                                      <div className="flex items-center mb-4">
+                                        <div className="relative">
+                                          <img 
+                                            src={waitlist.image} 
+                                            alt={waitlist.name}
+                                            className="w-16 h-16 rounded-xl object-cover ring-2 ring-primary/20 transition-all duration-300 group-hover:ring-primary/40"
+                                          />
+                                          <div className="absolute inset-0 bg-gradient-to-br from-primary/0 to-primary/20 rounded-xl transition-all duration-300 group-hover:from-primary/10 group-hover:to-primary/30" />
+                                        </div>
+                                        <div className="ml-4 flex-1 min-w-0">
+                                          <h3 className="text-lg font-bold text-foreground truncate group-hover:text-primary transition-colors duration-300">
+                                            {waitlist.name}
+                                          </h3>
+                                          <div className={cn("text-sm font-medium", rankColors[index])}>
+                                            #{rank} RUSH CHAMPION
                                           </div>
-                                        );
-                                      })}
-                                    </div>
-                                    
-                                    {/* Card Footer */}
-                                    <div className="px-2 py-0.5 bg-primary/5 dark:bg-primary/10 border-t border-primary/15">
-                                      <div className="text-xs text-muted-foreground text-center">
-                                        Tap to filter
+                                        </div>
                                       </div>
-                                    </div>
-                                    
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })() : waitlist.category ? (
-                          <span 
-                            className="px-3 py-1.5 bg-gradient-to-r from-primary to-primary-glow text-primary-foreground text-xs font-semibold rounded-full backdrop-blur-md shadow-lg cursor-pointer hover:brightness-110 transition-all"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              // Find the category ID that contains this category
-                              const categoryConfig = CATEGORY_CONFIG.find(config => 
-                                config.subcategories.includes(waitlist.category)
-                              );
-                              if (categoryConfig) {
-                                setSelectedMainCategory(categoryConfig.id);
-                              }
-                              setSelectedSubCategory('all');
-                            }}
-                          >
-                            {waitlist.category}
-                          </span>
-                        ) : null}
-                      </div>
-                    </div>
-                    
-                    <CardHeader>
-                      <CardTitle className="text-xl group-hover:text-primary transition-colors">
-                        {waitlist.name}
-                      </CardTitle>
-                      <CardDescription className="text-sm line-clamp-2">
-                        {waitlist.description}
-                      </CardDescription>
-                    </CardHeader>
-                    
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <Users className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-medium">
-                            {loading ? 'Loading...' : `${waitlist.participantCount.toLocaleString()} joined`}
-                          </span>
+                                      
+                                      {/* Rush Counter */}
+                                      <div className="flex items-center justify-between mb-4">
+                                        <div className="flex items-center gap-2">
+                                          <Users className="h-5 w-5 text-primary" />
+                                          <span className="text-sm text-muted-foreground">RUSH POWER</span>
+                                        </div>
+                                        <motion.div
+                                          className="flex items-center gap-1"
+                                          whileHover={{ scale: 1.1 }}
+                                          transition={{ type: "spring", bounce: 0.5 }}
+                                        >
+                                          <span className="text-2xl font-black text-primary">
+                                            {waitlist.participantCount.toLocaleString()}
+                                          </span>
+                                          <span className="text-primary text-xl">⚡</span>
+                                        </motion.div>
+                                      </div>
+                                      
+                                      {/* Description */}
+                                      <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+                                        {waitlist.description}
+                                      </p>
+                                      
+                                      {/* Categories */}
+                                      <div className="flex flex-wrap gap-2">
+                                        {(() => {
+                                          const { display, remaining } = prioritizeCategories(
+                                            waitlist.categories || [waitlist.category], 
+                                            selectedMainCategory, 
+                                            selectedSubCategory
+                                          );
+                                          return (
+                                            <>
+                                              {display.map((category, idx) => (
+                                                <motion.div
+                                                  key={category}
+                                                  initial={{ opacity: 0, scale: 0.8 }}
+                                                  animate={{ opacity: 1, scale: 1 }}
+                                                  transition={{ delay: 0.1 * idx }}
+                                                  className="px-3 py-1 text-xs font-medium rounded-full bg-primary/20 text-primary border border-primary/30 hover:bg-primary/30 transition-colors"
+                                                >
+                                                  {category}
+                                                </motion.div>
+                                              ))}
+                                              {remaining > 0 && (
+                                                <span className="px-2 py-1 text-xs text-muted-foreground">
+                                                  +{remaining}
+                                                </span>
+                                              )}
+                                            </>
+                                          );
+                                        })()}
+                                      </div>
+                                    </CardContent>
+                                  </Card>
+                                </Link>
+                              </motion.div>
+                            );
+                          })}
                         </div>
                       </div>
-                    </CardContent>
-                  </Link>
-                  
-                  <CardContent className="pt-0 pb-6">
-                    <Button 
-                      className="w-full" 
-                      size="lg"
-                      asChild
-                    >
-                      <Link to={`/waitlist/${waitlist.slug}`}>
-                        Join Rush
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
+                    )}
+                    
+                    {/* Leaderboard Section - Remaining Services */}
+                    {remaining.length > 0 && (
+                      <div className="space-y-3">
+                        <motion.div
+                          initial={{ opacity: 0, x: -30 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.6, delay: 0.8 }}
+                          className="flex items-center gap-3 mb-4"
+                        >
+                          <div className="h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent flex-1" />
+                          <span className="text-sm font-medium text-primary uppercase tracking-wider">
+                            RISING CHAMPIONS
+                          </span>
+                          <div className="h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent flex-1" />
+                        </motion.div>
+                        
+                        {remaining.map((waitlist, index) => {
+                          const rank = index + 4; // Starting from rank 4
+                          
+                          return (
+                            <motion.div
+                              key={waitlist.id}
+                              initial={{ opacity: 0, x: -50 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ 
+                                duration: 0.5, 
+                                delay: 0.9 + (index * 0.1),
+                                type: "spring",
+                                damping: 20
+                              }}
+                              className="group"
+                            >
+                              <Link to={`/service/${waitlist.slug}`} className="block">
+                                <Card className="relative overflow-hidden border transition-all duration-300 hover:border-primary/60 hover:shadow-lg hover:shadow-primary/20 bg-gradient-to-r from-card/60 to-card/30 backdrop-blur-sm">
+                                  <CardContent className="p-4">
+                                    <div className="flex items-center gap-4">
+                                      {/* Rank Number */}
+                                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-muted to-muted/50 border border-border/30 flex items-center justify-center group-hover:border-primary/40 transition-colors">
+                                        <span className="text-lg font-bold text-muted-foreground group-hover:text-primary transition-colors">
+                                          #{rank}
+                                        </span>
+                                      </div>
+                                      
+                                      {/* Service Icon */}
+                                      <div className="flex-shrink-0">
+                                        <img 
+                                          src={waitlist.image} 
+                                          alt={waitlist.name}
+                                          className="w-12 h-12 rounded-lg object-cover ring-1 ring-border/20 group-hover:ring-primary/30 transition-all duration-300"
+                                        />
+                                      </div>
+                                      
+                                      {/* Service Info */}
+                                      <div className="flex-1 min-w-0">
+                                        <h3 className="font-semibold text-foreground truncate group-hover:text-primary transition-colors">
+                                          {waitlist.name}
+                                        </h3>
+                                        <p className="text-sm text-muted-foreground line-clamp-1">
+                                          {waitlist.description}
+                                        </p>
+                                        
+                                        {/* Categories - Compact */}
+                                        <div className="flex gap-1 mt-1">
+                                          {(() => {
+                                            const { display } = prioritizeCategories(
+                                              waitlist.categories || [waitlist.category], 
+                                              selectedMainCategory, 
+                                              selectedSubCategory
+                                            );
+                                            return display.slice(0, 1).map((category, idx) => (
+                                              <span
+                                                key={category}
+                                                className="px-2 py-0.5 text-xs font-medium rounded-md bg-primary/15 text-primary border border-primary/20"
+                                              >
+                                                {category}
+                                              </span>
+                                            ));
+                                          })()}
+                                        </div>
+                                      </div>
+                                      
+                                      {/* Rush Power */}
+                                      <div className="flex-shrink-0 text-right">
+                                        <div className="flex items-center gap-1 mb-1">
+                                          <Users className="h-4 w-4 text-primary" />
+                                          <motion.span 
+                                            className="text-lg font-black text-primary"
+                                            whileHover={{ scale: 1.05 }}
+                                          >
+                                            {waitlist.participantCount.toLocaleString()}
+                                          </motion.span>
+                                          <span className="text-primary">⚡</span>
+                                        </div>
+                                        <div className="text-xs text-muted-foreground uppercase tracking-wider">
+                                          RUSH POWER
+                                        </div>
+                                      </div>
+                                      
+                                      {/* Action Arrow */}
+                                      <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <ArrowRight className="h-5 w-5 text-primary" />
+                                      </div>
+                                    </div>
+                                    
+                                    {/* Progress Bar Effect */}
+                                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary/0 via-primary/50 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                  </CardContent>
+                                </Card>
+                              </Link>
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           ) : (
             <div className="text-center py-12">
